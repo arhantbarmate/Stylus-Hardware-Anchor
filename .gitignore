@@ -1,9 +1,58 @@
-**/target/
-**/__pycache__/
+# =====================================
+# Secrets & Sensitive Data (CRITICAL!)
+# =====================================
+.env
+*.env
+private_key.txt
+keystore.json
+HARDWARE_ID.txt
+CONTRACT_ADDRESS.txt
+*.pem
+*.key
+
+# =====================================
+# Rust / Cargo (Smart Contracts)
+# =====================================
+target/
+**/*.rs.bk
+debug/
+# Keep Cargo.lock for reproducible builds in this specific project
+
+# =====================================
+# ESP32 / PlatformIO (Firmware)
+# =====================================
+.pio/
+.pioenvs/
+.piolibdeps/
+.vscode/
+!.vscode/extensions.json
+*.bin
+*.elf
+
+# =====================================
+# Python (Scripts & Verifier)
+# =====================================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.pytest_cache/
+.coverage
+
+# =====================================
+# Operating System & IDEs
+# =====================================
+.DS_Store
+Thumbs.db
+.idea/
+*.sublime-project
+*.swp
+
+# =====================================
+# Logs & Build Artifacts
+# =====================================
+*.log
+*.tmp
 *.wasm
-*.lock
-*.exe
-.env
-.secrets
-PRIV_KEY
-.env
+*.wat

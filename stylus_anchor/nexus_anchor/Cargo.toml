@@ -13,7 +13,7 @@ ruint = { git = "https://github.com/recmo/uint", tag = "v1.12.3" }
 export-abi = ["stylus-sdk/export-abi"]
 
 [lib]
-crate-type = ["lib", "cdylib"]
+crate-type = ["cdylib"]
 
 [profile.release]
 codegen-units = 1
@@ -22,3 +22,7 @@ lto = "fat"
 opt-level = "z"
 panic = "abort"
 strip = true
+
+[[bin]]
+name = "nexus_anchor"
+path = "src/main.rs"
