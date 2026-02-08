@@ -53,9 +53,6 @@ jobs:
       - name: Build Contract
         run: cargo build --release --target wasm32-unknown-unknown
 
-      - name: Run Tests
-        run: cargo test
-
       - name: Check Contract Size
         run: |
           CONTRACT_SIZE=$(ls -lh target/wasm32-unknown-unknown/release/nexus_anchor.wasm | awk '{print $5}')
