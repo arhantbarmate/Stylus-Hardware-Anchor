@@ -1600,51 +1600,7 @@ print(f"✓ Receipt verified: {tx_hash.hex()}")
 
 ## Future Roadmap
 
-### Milestone 2: Enhanced Attestation (Q2 2026)
-
-**Goals:**
-- Automated firmware measurement at build time
-- On-chain firmware registry with metadata
-- Multi-device orchestration protocols
-
-**Deliverables:**
-- Build script that computes firmware hash
-- Registry contract linking firmware hash → version metadata
-- Coordinator node for task distribution
-
-### Milestone 3: Production Deployment (Q3 2026)
-
-**Goals:**
-- Mainnet launch on Arbitrum One
-- Secure Boot and Flash Encryption enabled
-- Multi-node production network
-
-**Deliverables:**
-- Hardened firmware with full security features
-- Mainnet contract with multi-sig governance
-- Aggregator middleware with batching
-
-### Milestone 4: Advanced Features (Q4 2026)
-
-**Goals:**
-- Zero-knowledge proofs for execution privacy
-- Cross-chain verification (Ethereum L1, other L2s)
-- Decentralized verifier network
-
-**Deliverables:**
-- ZK-SNARK generation on ESP32-S3 (if feasible)
-- Bridge contracts for other chains
-- Verifier incentivization mechanism
-
-### Long-Term Vision
-
-**Potential Enhancements:**
-- TEE integration (if future ESP32 variants support)
-- Homomorphic encryption for private computation
-- Decentralized hardware registry (fully on-chain)
-- Hardware-backed private keys (for signing, not identity)
-
----
+For the official project timeline, budget allocations, and grant milestones, please refer to the [ROADMAP.md](../ROADMAP.md) file.
 
 ## References
 
