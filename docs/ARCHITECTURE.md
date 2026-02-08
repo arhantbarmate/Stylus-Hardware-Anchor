@@ -1,4 +1,4 @@
-# Nexus Protocol Architecture
+# Stylus Hardware Anchor Architecture
 
 **Version:** 1.1  
 **Status:** Production Specification  
@@ -27,7 +27,7 @@
 
 ## Overview
 
-The Nexus Protocol establishes a **cryptographic binding between physical hardware and blockchain state**, enabling verifiable off-chain computation with on-chain enforcement. This creates a trust-minimized bridge between real-world hardware execution and decentralized consensus.
+The Stylus Hardware Anchor establishes a **cryptographic binding between physical hardware and blockchain state**, enabling verifiable off-chain computation with on-chain enforcement. This creates a trust-minimized bridge between real-world hardware execution and decentralized consensus.
 
 ### Core Innovation
 
@@ -50,7 +50,7 @@ The Nexus Protocol establishes a **cryptographic binding between physical hardwa
 
 ### Architectural Layers
 
-The Nexus Protocol consists of three primary layers that work together to enforce hardware sovereignty:
+The Stylus Hardware Anchor consists of three primary layers that work together to enforce hardware sovereignty:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -125,11 +125,11 @@ ohr_firmware/
 │   ├── keccak256.cpp         # Ethereum Keccak implementation
 │   └── receipt_generator.cpp # Receipt construction
 ├── include/
-│   └── nexus_protocol.h      # Protocol constants
+│   └── anchor_protocol.h      # Protocol constants
 └── platformio.ini            # Build configuration
 ```
 
-**Primary Implementation:** `nexus_ohr_esp32_fixed.cpp`
+**Primary Implementation:** `anchor_ohr_esp32_fixed.cpp`
 
 ---
 
@@ -154,7 +154,7 @@ ohr_firmware/
 
 ```rust
 #[storage]
-pub struct NexusAnchor {
+pub struct anchorAnchor {
     /// Maps Hardware ID → Authorization Status
     /// Stores: bytes32 (hw_id) → bool (authorized)
     authorized_nodes: StorageMap<FixedBytes<32>, StorageBool>,
@@ -223,8 +223,8 @@ contracts/
 
 ```rust
 // Domain separation tags (IMMUTABLE - changing = hard fork)
-const NEXUS_RCT_DOMAIN: &[u8] = b"NEXUS_RCT_V1";  // Receipt digest domain
-const NEXUS_HWI_DOMAIN: &[u8] = b"NEXUS_OHR_V1";  // Hardware identity domain
+const anchor_RCT_DOMAIN: &[u8] = b"anchor_RCT_V1";  // Receipt digest domain
+const anchor_HWI_DOMAIN: &[u8] = b"anchor_OHR_V1";  // Hardware identity domain
 
 // Field sizes (bytes)
 const HW_ID_SIZE: usize = 32;
@@ -243,7 +243,7 @@ const RECEIPT_MATERIAL_SIZE: usize = 116;  // 12 + 32 + 32 + 32 + 8
 ┌────────────────────────────────────────────────────────┐
 │  Offset │ Size │ Field          │ Description          │
 ├─────────┼──────┼────────────────┼──────────────────────┤
-│    0    │  12  │ Protocol ID    │ "NEXUS_RCT_V1"       │
+│    0    │  12  │ Protocol ID    │ "anchor_RCT_V1"       │
 │   12    │  32  │ Hardware ID    │ Device fingerprint   │
 │   44    │  32  │ Firmware Hash  │ Code version binding │
 │   76    │  32  │ Execution Hash │ Computation result   │
@@ -297,7 +297,7 @@ FUNCTION verify_receipt(hw_id, fw_hash, exec_hash, counter, claimed_digest)
   └──────────────────────────────────────────────────────┘
   
   receipt_material = CONCAT(
-    NEXUS_RCT_DOMAIN,           // 12 bytes
+    anchor_RCT_DOMAIN,           // 12 bytes
     hw_id,                      // 32 bytes
     fw_hash,                    // 32 bytes
     exec_hash,                  // 32 bytes
@@ -334,8 +334,8 @@ END FUNCTION
 
 #### Implementation Files
 
-- **Firmware:** `nexus_ohr_esp32_fixed.cpp`
-- **Python Verifier:** `nexus_canonical_verifier.py`
+- **Firmware:** `anchor_ohr_esp32_fixed.cpp`
+- **Python Verifier:** `anchor_canonical_verifier.py`
 - **Smart Contract:** `contracts/src/lib.rs`
 
 ---
@@ -413,7 +413,7 @@ uint8_t receipt_material[116];
 size_t offset = 0;
 
 // Domain tag (12 bytes)
-memcpy(receipt_material + offset, "NEXUS_RCT_V1", 12);
+memcpy(receipt_material + offset, "anchor_RCT_V1", 12);
 offset += 12;
 
 // Hardware ID (32 bytes)
@@ -453,7 +453,7 @@ Output: 1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8
 
 **Protocol Domain Tag:**
 ```
-Input:  "NEXUS_RCT_V1" (12 bytes, UTF-8)
+Input:  "anchor_RCT_V1" (12 bytes, UTF-8)
 Output: [compute and verify against firmware output]
 ```
 
@@ -462,7 +462,7 @@ Output: [compute and verify against firmware output]
 **ESP32-S3:** Custom C implementation (Ethereum-compatible)
 ```c
 // Placeholder - replace with Ethereum Keccak in production
-void nexus_keccak256(const uint8_t *input, size_t len, uint8_t *output);
+void anchor_keccak256(const uint8_t *input, size_t len, uint8_t *output);
 ```
 
 **Python Verifier:**
@@ -513,7 +513,7 @@ let digest = keccak256(&data);  // Returns FixedBytes<32>
                       ↓
 ┌───────────────────────────────────────────────────────┐
 │  Keccak-256 Hash                                      │
-│  └─ nexus_keccak256(material, 16, output)             │
+│  └─ anchor_keccak256(material, 16, output)             │
 └─────────────────────┬─────────────────────────────────┘
                       │
                       ↓
@@ -568,7 +568,7 @@ let digest = keccak256(&data);  // Returns FixedBytes<32>
                       ↓
 ┌───────────────────────────────────────────────────────┐
 │  Build Receipt Material (116 bytes)                   │
-│  "NEXUS_RCT_V1" || hw_id || fw || exec || counter     │
+│  "anchor_RCT_V1" || hw_id || fw || exec || counter     │
 └─────────────────────┬─────────────────────────────────┘
                       │
                       ↓
@@ -626,7 +626,7 @@ let digest = keccak256(&data);  // Returns FixedBytes<32>
                       ↓
 ┌───────────────────────────────────────────────────────┐
 │  [STAGE 4] Digest Reconstruction                      │
-│  1. material = "NEXUS_RCT_V1" || hw || fw || exec || c│
+│  1. material = "anchor_RCT_V1" || hw || fw || exec || c│
 │  2. reconstructed = Keccak256(material)               │
 │  3. IF reconstructed != claimed_digest REVERT         │
 └─────────────────────┬─────────────────────────────────┘
@@ -955,7 +955,7 @@ nvs,      data, nvs,     0x9000,  0x4000,
 ```solidity
 // Pseudo-Solidity for documentation (actual implementation is Rust/Stylus)
 
-interface INexusAnchor {
+interface IanchorAnchor {
     // ============================================================
     // ADMINISTRATIVE FUNCTIONS (Owner Only)
     // ============================================================
@@ -1081,7 +1081,7 @@ import json
 w3 = Web3(Web3.HTTPProvider('https://sepolia-rollup.arbitrum.io/rpc'))
 
 # Load contract
-with open('NexusAnchor.abi.json') as f:
+with open('anchorAnchor.abi.json') as f:
     abi = json.load(f)
 
 contract_address = '0x34645ff1dd8af86176fe6b28812aaa4d85e33b0d'
@@ -1169,12 +1169,12 @@ def get_counter(hw_id_hex: str) -> int:
 ### ESP32-S3 C++ API
 
 ```cpp
-// nexus_protocol.h
+// anchor_protocol.h
 
 #include <cstdint>
 #include <cstddef>
 
-namespace Nexus {
+namespace anchor {
 
 // ============================================================================
 // DATA STRUCTURES
@@ -1238,7 +1238,7 @@ void keccak256(const uint8_t* input, size_t len, uint8_t* output);
  */
 esp_err_t get_counter(uint64_t* counter);
 
-} // namespace Nexus
+} // namespace anchor
 ```
 
 ---
@@ -1696,7 +1696,7 @@ print(f"✓ Receipt verified: {tx_hash.hex()}")
 ## Appendix B: File Manifest
 
 ```
-nexus-protocol/
+stylus-hardware-anchor/
 ├── contracts/
 │   ├── src/
 │   │   └── lib.rs                    # Stylus smart contract
@@ -1706,14 +1706,14 @@ nexus-protocol/
 ├── firmware/
 │   ├── src/
 │   │   ├── main.cpp                  # Main firmware
-│   │   ├── nexus_ohr_esp32_fixed.cpp # Production implementation
+│   │   ├── anchor_ohr_esp32_fixed.cpp # Production implementation
 │   │   └── keccak256.cpp             # Crypto (placeholder)
 │   ├── include/
-│   │   └── nexus_protocol.h          # API header
+│   │   └── anchor_protocol.h          # API header
 │   └── platformio.ini                # Build config
 │
 ├── verifier/
-│   ├── nexus_canonical_verifier.py   # Python verifier
+│   ├── anchor_canonical_verifier.py   # Python verifier
 │   ├── generate_test_receipt.py      # Test utilities
 │   ├── requirements.txt              # Dependencies
 │   └── README_VERIFIER.md            # Setup guide
@@ -1722,7 +1722,7 @@ nexus-protocol/
 │   ├── ARCHITECTURE.md               # This document
 │   ├── SECURITY_AUDIT_COMPLIANCE.md  # Audit report
 │   ├── PRODUCTION_DEPLOYMENT_GUIDE.md# Deployment guide
-│   └── NEXUS_CANONICAL_VERIFIER_SPEC.md # Verifier spec
+│   └── anchor_CANONICAL_VERIFIER_SPEC.md # Verifier spec
 │
 └── README.md                          # Project overview
 ```
@@ -1733,8 +1733,8 @@ nexus-protocol/
 
 | Version | Date | Changes | Author |
 |---------|------|---------|--------|
-| 1.0 | 2025-02-08 | Initial architecture document | Nexus Team |
-| 1.1 | 2026-02-08 | Production specification update | Nexus Team |
+| 1.0 | 2025-02-08 | Initial architecture document | anchor Team |
+| 1.1 | 2026-02-08 | Production specification update | anchor Team |
 |  |  | - Added NVS trust model clarification |  |
 |  |  | - Standardized Rust version (≥1.82.0) |  |
 |  |  | - Expanded security considerations |  |
@@ -1746,7 +1746,7 @@ nexus-protocol/
 **Document Status:** Production Specification  
 **Classification:** Public  
 **Last Updated:** February 8, 2026  
-**Maintainer:** Nexus Protocol Development Team  
+**Maintainer:** Stylus Hardware Anchor Development Team  
 **License:** MIT
 
 ---

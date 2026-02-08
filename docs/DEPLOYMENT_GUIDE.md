@@ -1,4 +1,4 @@
-# Nexus Protocol - Complete Deployment Guide
+# Stylus Hardware Anchor - Complete Deployment Guide
 
 **Version:** 1.0  
 **Target Environment:** Windows 11 + WSL 1 (Ubuntu)  
@@ -23,7 +23,7 @@
 
 ## Overview
 
-This guide walks through the complete deployment of the Nexus Protocol on the following stack:
+This guide walks through the complete deployment of the Stylus Hardware Anchor on the following stack:
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -181,13 +181,13 @@ python3 -c "from web3 import Web3; print('✓ web3.py installed')"
 python3 -c "from eth_hash.auto import keccak; print('✓ eth-hash installed')"
 ```
 
-### 5. Clone Nexus Protocol Repository
+### 5. Clone Stylus Hardware Anchor Repository
 
 ```bash
 # Clone the repository
 cd ~
-git clone https://github.com/your-org/nexus-protocol.git
-cd nexus-protocol
+git clone https://github.com/your-org/stylus-hardware-anchor.git
+cd stylus-hardware-anchor
 
 # Verify directory structure
 ls -la
@@ -206,7 +206,7 @@ ls -la
 ### 1. Navigate to Contracts Directory
 
 ```bash
-cd ~/nexus-protocol/contracts
+cd ~/stylus-hardware-anchor/contracts
 ```
 
 ### 2. Review & Fix Dependencies
@@ -217,7 +217,7 @@ The contract uses a patched version of `ruint` to bypass Rust edition 2024 confl
 
 ```toml
 [package]
-name = "nexus_anchor"
+name = "anchor_anchor"
 version = "0.1.0"
 edition = "2021"
 
@@ -262,7 +262,7 @@ Save this as `contracts/Cargo.toml`:
 
 ```toml
 [package]
-name = "nexus_anchor"
+name = "anchor_anchor"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
@@ -303,7 +303,7 @@ ruint = { version = "1.12.3", default-features = false, features = ["alloc"] }
 cargo build --release --target wasm32-unknown-unknown
 
 # Expected output:
-#    Compiling nexus_anchor v0.1.0 (/home/user/nexus-protocol/contracts)
+#    Compiling anchor_anchor v0.1.0 (/home/user/stylus-hardware-anchor/contracts)
 #     Finished release [optimized] target(s) in X.XXs
 ```
 
@@ -311,7 +311,7 @@ cargo build --release --target wasm32-unknown-unknown
 ```bash
 ls -lh target/wasm32-unknown-unknown/release/*.wasm
 
-# Expected: nexus_anchor.wasm (~20-30 KB)
+# Expected: anchor_anchor.wasm (~20-30 KB)
 ```
 
 ### 4. Check Contract Compatibility
@@ -402,7 +402,7 @@ EOF
 ### 1. Navigate to Firmware Directory
 
 ```bash
-cd ~/nexus-protocol/ohr_firmware
+cd ~/stylus-hardware-anchor/ohr_firmware
 ```
 
 **⚠️ IMPORTANT: Firmware File Naming**
@@ -421,12 +421,12 @@ ohr_firmware/
 **If your file is named differently:**
 ```bash
 # Rename to main.cpp
-cd ~/nexus-protocol/ohr_firmware/src
-mv nexus_ohr_esp32_fixed.cpp main.cpp
+cd ~/stylus-hardware-anchor/ohr_firmware/src
+mv anchor_ohr_esp32_fixed.cpp main.cpp
 
 # Or specify in platformio.ini:
 # [env:esp32s3]
-# build_src_filter = +<nexus_ohr_esp32_fixed.cpp>
+# build_src_filter = +<anchor_ohr_esp32_fixed.cpp>
 ```
 
 For this guide, we assume **standard naming** with `main.cpp`.
@@ -458,7 +458,7 @@ upload_speed = 921600
 **Correct Approach:**
 ```bash
 # Run from WSL Ubuntu (not Windows terminal)
-cd ~/nexus-protocol/ohr_firmware
+cd ~/stylus-hardware-anchor/ohr_firmware
 
 # Build
 pio run
@@ -479,11 +479,11 @@ Error: The filename, directory name, or volume label syntax is incorrect: '\\\\w
 ```bash
 # Ensure you're in native WSL path (NOT /mnt/c/...)
 pwd
-# Should show: /home/username/nexus-protocol/ohr_firmware
+# Should show: /home/username/stylus-hardware-anchor/ohr_firmware
 
 # If in /mnt/c/, move project:
-cp -r /mnt/c/Users/YourName/nexus-protocol ~/
-cd ~/nexus-protocol/ohr_firmware
+cp -r /mnt/c/Users/YourName/stylus-hardware-anchor ~/
+cd ~/stylus-hardware-anchor/ohr_firmware
 ```
 
 ### 4. Connect ESP32-S3
@@ -532,13 +532,13 @@ pio device monitor --baud 115200
 
 # Expected output:
 # ═══════════════════════════════════════════════════════════
-#   NexusAnchor OHR - Hardware Identity & Receipt System
+#   anchorAnchor OHR - Hardware Identity & Receipt System
 #   Version: Phase-2 Security Audit Compliant
 # ═══════════════════════════════════════════════════════════
 # ✓ NVS initialized
 # 
 # ╔═══════════════════════════════════════════════════════════════╗
-# ║          NEXUS OHR SECURITY STATUS REPORT                    ║
+# ║          anchor OHR SECURITY STATUS REPORT                    ║
 # ╠═══════════════════════════════════════════════════════════════╣
 # ║ Chip: esp32s3                                                 ║
 # ║ Unique ID: ✓ eFuse-backed (production-grade)                 ║
@@ -590,7 +590,7 @@ The status report will be updated once Ethereum-compatible Keccak is integrated.
 **Save to file:**
 ```bash
 # From another terminal (while monitor is running)
-cd ~/nexus-protocol
+cd ~/stylus-hardware-anchor
 
 # Extract from serial output
 pio device monitor --baud 115200 2>&1 | grep "Hardware Identity" | head -1 | awk '{print $3}' > HARDWARE_ID.txt
@@ -700,7 +700,7 @@ pio device monitor --baud 115200
 ```python
 #!/usr/bin/env python3
 """
-Nexus Protocol - Hardware Authorization Script
+Stylus Hardware Anchor - Hardware Authorization Script
 Authorizes ESP32-S3 hardware identity on-chain
 """
 
@@ -814,7 +814,7 @@ def authorize_hardware(hw_id_hex: str, private_key: str) -> str:
         raise Exception(f"Transaction failed: {receipt}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Authorize ESP32-S3 hardware on Nexus Protocol')
+    parser = argparse.ArgumentParser(description='Authorize ESP32-S3 hardware on Stylus Hardware Anchor')
     parser.add_argument('--hw-id', required=True, help='Hardware identity (0x...)')
     parser.add_argument('--private-key', help='Private key (or use PRIVATE_KEY env var)')
     
@@ -866,7 +866,7 @@ echo ${PRIVATE_KEY:0:10}...  # Shows first 10 chars
 ### 3. Run Authorization
 
 ```bash
-cd ~/nexus-protocol
+cd ~/stylus-hardware-anchor
 
 # Read hardware ID from file (or copy manually)
 HW_ID=$(cat HARDWARE_ID.txt)
@@ -951,7 +951,7 @@ The firmware automatically generates a test receipt on boot.
 **From Serial Monitor:**
 ```
 ═══════════════════════════════════════════════════════════
-           NEXUS OHR ATTESTATION RECEIPT
+           anchor OHR ATTESTATION RECEIPT
 ═══════════════════════════════════════════════════════════
 {
   "receipt_digest": "0x1234567890abcdef...",
@@ -976,10 +976,10 @@ cat test_receipt.json
 ### 3. Verify Receipt with Python Verifier (⚠️ Expected to Fail)
 
 ```bash
-cd ~/nexus-protocol/verifier
+cd ~/stylus-hardware-anchor/verifier
 
 # This WILL FAIL due to Keccak mismatch - this is EXPECTED
-python3 nexus_canonical_verifier.py
+python3 anchor_canonical_verifier.py
 ```
 
 **Expected Output:**
@@ -1066,8 +1066,8 @@ Error: The filename, directory name, or volume label syntax is incorrect: '\\\\w
 **Solution:**
 ```bash
 # Move project to native WSL filesystem
-cp -r /mnt/c/Users/YourName/nexus-protocol ~/
-cd ~/nexus-protocol/ohr_firmware
+cp -r /mnt/c/Users/YourName/stylus-hardware-anchor ~/
+cd ~/stylus-hardware-anchor/ohr_firmware
 
 # Rebuild
 pio run
@@ -1490,11 +1490,11 @@ To unlock full verification:
 
 ```bash
 # Build contract
-cd ~/nexus-protocol/contracts
+cd ~/stylus-hardware-anchor/contracts
 cargo stylus check --endpoint https://sepolia-rollup.arbitrum.io/rpc
 
 # Build firmware
-cd ~/nexus-protocol/ohr_firmware
+cd ~/stylus-hardware-anchor/ohr_firmware
 pio run
 
 # Flash firmware
@@ -1507,8 +1507,8 @@ pio device monitor --baud 115200
 python3 scripts/authorize_hardware.py --hw-id 0x...
 
 # Run verifier
-cd ~/nexus-protocol/verifier
-python3 nexus_canonical_verifier.py
+cd ~/stylus-hardware-anchor/verifier
+python3 anchor_canonical_verifier.py
 ```
 
 ### Key Files
@@ -1516,9 +1516,9 @@ python3 nexus_canonical_verifier.py
 | File | Purpose | Location |
 |------|---------|----------|
 | `lib.rs` | Smart contract | `contracts/src/` |
-| `nexus_ohr_esp32_fixed.cpp` | Firmware | `ohr_firmware/src/` |
+| `anchor_ohr_esp32_fixed.cpp` | Firmware | `ohr_firmware/src/` |
 | `authorize_hardware.py` | Authorization script | `scripts/` |
-| `nexus_canonical_verifier.py` | Off-chain verifier | `verifier/` |
+| `anchor_canonical_verifier.py` | Off-chain verifier | `verifier/` |
 | `HARDWARE_ID.txt` | Your ESP32 identity | Project root |
 | `CONTRACT_ADDRESS.txt` | Deployed contract | Project root |
 
@@ -1534,7 +1534,7 @@ python3 nexus_canonical_verifier.py
 
 - **Architecture:** `ARCHITECTURE.md`
 - **Security Audit:** `SECURITY_AUDIT_COMPLIANCE.md`
-- **Verifier Spec:** `NEXUS_CANONICAL_VERIFIER_SPEC.md`
+- **Verifier Spec:** `anchor_CANONICAL_VERIFIER_SPEC.md`
 - **Production Guide:** `PRODUCTION_DEPLOYMENT_GUIDE.md`
 
 ---
@@ -1546,7 +1546,7 @@ Save as `scripts/authorize_hardware.py`:
 ```python
 #!/usr/bin/env python3
 """
-Nexus Protocol - Hardware Authorization Script
+Stylus Hardware Anchor - Hardware Authorization Script
 Complete implementation for authorizing ESP32-S3 devices
 """
 
@@ -1582,7 +1582,7 @@ def authorize_hardware(hw_id_hex: str, private_key: str) -> str:
     """Authorize hardware identity on-chain"""
     
     print("="*70)
-    print("  NEXUS PROTOCOL - HARDWARE AUTHORIZATION")
+    print("  anchor PROTOCOL - HARDWARE AUTHORIZATION")
     print("="*70)
     print()
     
@@ -1680,7 +1680,7 @@ def authorize_hardware(hw_id_hex: str, private_key: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Authorize ESP32-S3 hardware on Nexus Protocol',
+        description='Authorize ESP32-S3 hardware on Stylus Hardware Anchor',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -1731,7 +1731,7 @@ Examples:
             print(f"\n2. Generate receipt on ESP32-S3")
             print(f"   (Already happening automatically on device)")
             print(f"\n3. Test receipt verification:")
-            print(f"   python3 verifier/nexus_canonical_verifier.py")
+            print(f"   python3 verifier/anchor_canonical_verifier.py")
             print()
         
     except Exception as e:
@@ -1751,6 +1751,6 @@ if __name__ == "__main__":
 **Document Version:** 1.0  
 **Status:** Production  
 **Last Updated:** February 8, 2026  
-**Maintainer:** Nexus Protocol Team
+**Maintainer:** Stylus Hardware Anchor Team
 
 **END OF DEPLOYMENT GUIDE**

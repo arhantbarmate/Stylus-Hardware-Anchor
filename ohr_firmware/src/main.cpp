@@ -122,7 +122,7 @@ void setup() {
 
   // ---- OUTPUT ----
   Serial.println("\n╔════════════════════════════════════════════╗");
-  Serial.println("║   NEXUS ORTHONODE HARDWARE IDENTITY        ║");
+  Serial.println("║   anchor ORTHONODE HARDWARE IDENTITY        ║");
   Serial.println("╚════════════════════════════════════════════╝");
   Serial.println();
 

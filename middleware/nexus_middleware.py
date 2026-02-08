@@ -1,6 +1,6 @@
 """
-Nexus Protocol - Sovereign Hardware Middleware
-Bridge: ESP32-S3 (OHR) <---> Arbitrum Sepolia (NexusAnchor)
+Stylus Hardware Anchor - Sovereign Hardware Middleware
+Bridge: ESP32-S3 (OHR) <---> Arbitrum Sepolia (anchorAnchor)
 
 AUDIT COMPLIANCE (PHASE 2):
 - Environment-secured private keys ✅
@@ -27,14 +27,14 @@ load_dotenv()
 RPC_URL = os.getenv("RPC_URL")
 CHAIN_ID = 421614  # Arbitrum Sepolia
 
-# NexusAnchor Contract (VERIFIED DEPLOYMENT)
+# anchorAnchor Contract (VERIFIED DEPLOYMENT)
 CONTRACT_ADDRESS = os.getenv(
     "CONTRACT_ADDRESS", "0xbd4548598e968a4eafd06193bcaa30b8f9b52a76"
 )
 
 # SECURITY FIX: Secure Private Key Handling
 # Pulled from .env or environment variable for grant-level security.
-PRIVATE_KEY = os.getenv("NEXUS_ANCHOR_KEY")
+PRIVATE_KEY = os.getenv("anchor_ANCHOR_KEY")
 
 # ============================================================================
 # INITIALIZATION & SAFETY CHECKS
@@ -42,7 +42,7 @@ PRIVATE_KEY = os.getenv("NEXUS_ANCHOR_KEY")
 
 if not PRIVATE_KEY:
     raise ValueError(
-        "CRITICAL: NEXUS_ANCHOR_KEY not found in environment or .env file."
+        "CRITICAL: anchor_ANCHOR_KEY not found in environment or .env file."
     )
 
 if not RPC_URL:
@@ -52,7 +52,7 @@ if not RPC_URL:
 w3 = Web3(Web3.HTTPProvider(RPC_URL))
 account = Account.from_key(PRIVATE_KEY)
 
-print(f"--- Nexus Middleware Initialized ---")
+print(f"--- anchor Middleware Initialized ---")
 print(f"Connected to Arbitrum Sepolia: {w3.is_connected()}")
 print(f"Using Account: {account.address}")
 
@@ -75,7 +75,7 @@ CONTRACT_ABI = [
 ]
 
 
-class NexusMiddleware:
+class anchorMiddleware:
     def __init__(self):
         self.w3 = Web3(Web3.HTTPProvider(RPC_URL))
         if not self.w3.is_connected():
@@ -93,10 +93,10 @@ class NexusMiddleware:
         self.last_counters = {}
 
         # INVARIANT CHECK: Domain Separation
-        # Expected ESP32 Tag: "NEXUS_OHR_V1" (12 bytes, ASCII)
-        self.domain_tag = "NEXUS_OHR_V1"
+        # Expected ESP32 Tag: "anchor_OHR_V1" (12 bytes, ASCII)
+        self.domain_tag = "anchor_OHR_V1"
 
-        print(f"✅ Nexus Middleware Live | Chain ID: {CHAIN_ID}")
+        print(f"✅ anchor Middleware Live | Chain ID: {CHAIN_ID}")
         print(f"✅ Wallet: {self.account.address}")
         print(f"✅ Active Anchor: {CONTRACT_ADDRESS}")
 
@@ -170,7 +170,7 @@ class NexusMiddleware:
 
 
 if __name__ == "__main__":
-    nm = NexusMiddleware()
+    nm = anchorMiddleware()
     # Test Anchor (Placeholder Digest)
     test_digest = "0x" + "bb" * 32
     nm.anchor_receipt(test_digest, hardware_identity_hex="ESP32-S3-DEVKIT", counter=1)

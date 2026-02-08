@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Nexus Test Receipt Generator
+anchor Test Receipt Generator
 Generates cryptographically valid test receipts for verifier testing
 """
 
 import json
 from eth_hash.auto import keccak
 
-NEXUS_RCT_DOMAIN = b"NEXUS_RCT_V1"
+anchor_RCT_DOMAIN = b"anchor_RCT_V1"
 
 
 def generate_test_receipt(
@@ -69,7 +69,7 @@ def generate_test_receipt(
 
     # Compute canonical receipt digest
     receipt_material = (
-        NEXUS_RCT_DOMAIN + hw_id_bytes + fw_hash_bytes + exec_hash_bytes + counter_be
+        anchor_RCT_DOMAIN + hw_id_bytes + fw_hash_bytes + exec_hash_bytes + counter_be
     )
 
     receipt_digest = keccak(receipt_material)
@@ -130,7 +130,7 @@ def verify_receipt_format(receipt: dict) -> bool:
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("  NEXUS TEST RECEIPT GENERATOR")
+    print("  anchor TEST RECEIPT GENERATOR")
     print("=" * 70)
     print()
 

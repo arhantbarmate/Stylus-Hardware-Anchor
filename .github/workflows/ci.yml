@@ -1,4 +1,4 @@
-name: Nexus Protocol CI
+name: Stylus Hardware Anchor CI
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: stylus_anchor/nexus_anchor
+        working-directory: stylus_anchor/stylus_hardware_anchor
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -39,7 +39,7 @@ jobs:
       - name: Cache Build Artifacts
         uses: actions/cache@v4
         with:
-          path: stylus_anchor/nexus_anchor/target
+          path: stylus_anchor/stylus_hardware_anchor/target
           key: ${{ runner.os }}-build-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-
@@ -55,7 +55,7 @@ jobs:
 
       - name: Check Contract Size
         run: |
-          CONTRACT_SIZE=$(ls -lh target/wasm32-unknown-unknown/release/nexus_anchor.wasm | awk '{print $5}')
+          CONTRACT_SIZE=$(ls -lh target/wasm32-unknown-unknown/release/stylus_hardware_anchor.wasm | awk '{print $5}')
           echo "✅ Contract size: $CONTRACT_SIZE"
 
   esp32-firmware-check:
@@ -110,7 +110,7 @@ jobs:
 
       - name: Run Security Audit
         run: |
-          cd stylus_anchor/nexus_anchor
+          cd stylus_anchor/stylus_hardware_anchor
           cargo audit
 
   python-middleware-check:
@@ -142,7 +142,7 @@ jobs:
         run: |
           pip install pylint black
           black --check .
-          pylint nexus_verifier.py generate_test_receipt.py || true
+          pylint anchor_verifier.py generate_test_receipt.py || true
 
   documentation-check:
     name: Documentation Validation
@@ -174,7 +174,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: stylus_anchor/nexus_anchor
+        working-directory: stylus_anchor/stylus_hardware_anchor
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

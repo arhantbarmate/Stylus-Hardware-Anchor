@@ -1,6 +1,6 @@
-# Contributing to Nexus Protocol
+# Contributing to Stylus Hardware Anchor
 
-Thank you for your interest in contributing to Nexus Protocol!
+Thank you for your interest in contributing to Stylus Hardware Anchor!
 This document provides guidelines for contributing to the project.
 
 ## 🎯 How to Contribute
@@ -21,7 +21,7 @@ We welcome feature suggestions! Please:
 
 - Check existing issues first to avoid duplicates
 - Clearly describe the use case and benefits
-- Explain how it fits with Nexus Protocol's vision
+- Explain how it fits with Stylus Hardware Anchor's vision
 
 ### Pull Requests
 
@@ -140,8 +140,8 @@ Closes #42
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/nexus-protocol.git
-cd nexus-protocol
+git clone https://github.com/your-org/stylus-hardware-anchor.git
+cd stylus-hardware-anchor
 
 # Install Rust dependencies
 cargo build
@@ -176,4 +176,4 @@ If you have questions about contributing:
 
 ---
 
-Thank you for contributing to Nexus Protocol! 🚀
+Thank you for contributing to Stylus Hardware Anchor! 🚀

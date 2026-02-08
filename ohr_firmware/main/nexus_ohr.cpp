@@ -1,5 +1,5 @@
 /**
- * NexusAnchor Hardware Identity & Receipt Generation
+ * anchorAnchor Hardware Identity & Receipt Generation
  * ESP32 Compatible Version (Software Keccak)
  * 
  * SECURITY AUDIT COMPLIANT - Phase 2
@@ -35,16 +35,16 @@
 // mbedTLS SHA3 ≠ Ethereum Keccak (different padding: 0x06 vs 0x01)
 #include "mbedtls/sha3.h"
 
-static const char *TAG = "NEXUS_OHR";
+static const char *TAG = "anchor_OHR";
 
 // ============================================================================
 // PROTOCOL CONSTANTS (FROZEN)
 // ============================================================================
 // Separate domain tags to avoid cross-hash ambiguity
-#define NEXUS_HWI_DOMAIN "NEXUS_OHR_V1"  // Hardware Identity
-#define NEXUS_RCT_DOMAIN "NEXUS_RCT_V1"  // Receipt Digest
-#define NEXUS_HWI_DOMAIN_LEN 12
-#define NEXUS_RCT_DOMAIN_LEN 12
+#define anchor_HWI_DOMAIN "anchor_OHR_V1"  // Hardware Identity
+#define anchor_RCT_DOMAIN "anchor_RCT_V1"  // Receipt Digest
+#define anchor_HWI_DOMAIN_LEN 12
+#define anchor_RCT_DOMAIN_LEN 12
 
 // ============================================================================
 // KECCAK-256 WRAPPER (⚠️ SOFTWARE PLACEHOLDER - NOT PRODUCTION READY)
@@ -69,7 +69,7 @@ static const char *TAG = "NEXUS_OHR";
  * For Phase-2 middleware testing, use reference Keccak and mark this
  * firmware as "placeholder pending hardware Keccak implementation."
  */
-static void nexus_keccak256_placeholder(const uint8_t *input, size_t len, uint8_t *output) {
+static void anchor_keccak256_placeholder(const uint8_t *input, size_t len, uint8_t *output) {
     mbedtls_sha3_context ctx;
     mbedtls_sha3_init(&ctx);
     mbedtls_sha3_starts(&ctx, MBEDTLS_SHA3_256);
@@ -81,7 +81,7 @@ static void nexus_keccak256_placeholder(const uint8_t *input, size_t len, uint8_
 }
 
 // Alias for code clarity
-#define nexus_keccak256 nexus_keccak256_placeholder
+#define anchor_keccak256 anchor_keccak256_placeholder
 
 // ============================================================================
 // CHIP-AGNOSTIC UNIQUE ID RETRIEVAL
@@ -96,7 +96,7 @@ static void nexus_keccak256_placeholder(const uint8_t *input, size_t len, uint8_
  * PRODUCTION REQUIREMENT:
  * Use ESP32-S2/S3/C3 with eFuse-backed OPTIONAL_UNIQUE_ID for non-clonability
  */
-static esp_err_t nexus_get_chip_id(uint8_t chip_id[16]) {
+static esp_err_t anchor_get_chip_id(uint8_t chip_id[16]) {
 #if defined(CONFIG_IDF_TARGET_ESP32S3) || defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32C3)
     // ESP32-S2/S3/C3 have eFuse-backed OPTIONAL_UNIQUE_ID (production-grade)
     ESP_LOGI(TAG, "✓ Using eFuse-backed unique ID (production-grade)");
@@ -147,7 +147,7 @@ static esp_err_t nexus_get_chip_id(uint8_t chip_id[16]) {
  * - Security audit compliance
  * - Hardware sovereignty claims
  */
-static esp_err_t nexus_get_security_state_fingerprint(uint8_t digest[32]) {
+static esp_err_t anchor_get_security_state_fingerprint(uint8_t digest[32]) {
 #if CONFIG_SECURE_BOOT_V2_ENABLED
     ESP_LOGW(TAG, "⚠️ Security state fingerprint - NOT a cryptographic key");
     ESP_LOGW(TAG, "⚠️ Production requires eFuse-backed Secure Boot V2 key digest");
@@ -162,7 +162,7 @@ static esp_err_t nexus_get_security_state_fingerprint(uint8_t digest[32]) {
     temp[2] = chip_info.revision;
     
     // Hash to create 32-byte fingerprint
-    nexus_keccak256(temp, 32, digest);
+    anchor_keccak256(temp, 32, digest);
     
     ESP_LOGI(TAG, "Security fingerprint: model=%d cores=%d rev=%d", 
              chip_info.model, chip_info.cores, chip_info.revision);
@@ -184,7 +184,7 @@ static esp_err_t nexus_get_security_state_fingerprint(uint8_t digest[32]) {
  * Hardware Identity Derivation (FROZEN PROTOCOL)
  * 
  * hardware_identity = keccak256(
- *     NEXUS_HWI_DOMAIN     || // 12 bytes - Domain separation
+ *     anchor_HWI_DOMAIN     || // 12 bytes - Domain separation
  *     chip_unique_id       || // 16 bytes - Device uniqueness
  *     secure_boot_enabled  || //  1 byte  - Security state
  *     flash_encrypt_enabled|| //  1 byte  - Security state
@@ -200,7 +200,7 @@ static esp_err_t nexus_get_security_state_fingerprint(uint8_t digest[32]) {
  * - ESP32-S2/S3/C3 for eFuse-backed unique ID
  * - security_fingerprint must be replaced with real Secure Boot V2 key digest
  */
-static esp_err_t nexus_derive_hardware_identity(uint8_t hardware_identity[32]) {
+static esp_err_t anchor_derive_hardware_identity(uint8_t hardware_identity[32]) {
     uint8_t identity_material[128] = {0};
     size_t offset = 0;
     esp_err_t err;
@@ -208,12 +208,12 @@ static esp_err_t nexus_derive_hardware_identity(uint8_t hardware_identity[32]) {
     ESP_LOGI(TAG, "Deriving hardware identity...");
     
     // 1. Domain Tag (12 bytes) - prevents cross-protocol hash collisions
-    memcpy(identity_material + offset, NEXUS_HWI_DOMAIN, NEXUS_HWI_DOMAIN_LEN);
-    offset += NEXUS_HWI_DOMAIN_LEN;
+    memcpy(identity_material + offset, anchor_HWI_DOMAIN, anchor_HWI_DOMAIN_LEN);
+    offset += anchor_HWI_DOMAIN_LEN;
     
     // 2. Chip Unique ID (16 bytes)
     uint8_t chip_id[16];
-    err = nexus_get_chip_id(chip_id);
+    err = anchor_get_chip_id(chip_id);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Failed to get chip ID");
         return err;
@@ -235,7 +235,7 @@ static esp_err_t nexus_derive_hardware_identity(uint8_t hardware_identity[32]) {
     // 4. Security State Fingerprint (32 bytes)
     // ⚠️ This is a placeholder - production needs real Secure Boot key digest
     uint8_t sec_fingerprint[32];
-    err = nexus_get_security_state_fingerprint(sec_fingerprint);
+    err = anchor_get_security_state_fingerprint(sec_fingerprint);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Failed to get security fingerprint");
         return err;
@@ -247,7 +247,7 @@ static esp_err_t nexus_derive_hardware_identity(uint8_t hardware_identity[32]) {
     // Firmware binding happens at receipt generation time
     
     // Hash to derive final identity
-    nexus_keccak256(identity_material, offset, hardware_identity);
+    anchor_keccak256(identity_material, offset, hardware_identity);
 
     // Zeroize sensitive buffers
     memset(identity_material, 0, sizeof(identity_material));
@@ -269,12 +269,12 @@ static esp_err_t nexus_derive_hardware_identity(uint8_t hardware_identity[32]) {
  * - Changes when firmware is updated
  * - Is verifiable by middleware
  */
-static esp_err_t nexus_get_firmware_hash(uint8_t firmware_hash[32]) {
+static esp_err_t anchor_get_firmware_hash(uint8_t firmware_hash[32]) {
     const esp_app_desc_t *app_desc = esp_app_get_description();
     
     // Normalize ESP-IDF's SHA256 to Keccak-256
     // ⚠️ This uses placeholder Keccak - production needs true Ethereum Keccak
-    nexus_keccak256(app_desc->app_elf_sha256, 32, firmware_hash);
+    anchor_keccak256(app_desc->app_elf_sha256, 32, firmware_hash);
     
     ESP_LOGI(TAG, "Firmware version: %s", app_desc->version);
     ESP_LOGI(TAG, "Compile time: %s %s", app_desc->date, app_desc->time);
@@ -303,9 +303,9 @@ static esp_err_t nexus_get_firmware_hash(uint8_t firmware_hash[32]) {
  * This ties NVS encryption to flash encryption key, preventing
  * offline modification of counter values.
  */
-static esp_err_t nexus_increment_counter(uint64_t *new_counter) {
+static esp_err_t anchor_increment_counter(uint64_t *new_counter) {
     nvs_handle_t h;
-    esp_err_t err = nvs_open("nexus", NVS_READWRITE, &h);
+    esp_err_t err = nvs_open("anchor", NVS_READWRITE, &h);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Failed to open NVS: %s", esp_err_to_name(err));
         return err;
@@ -358,7 +358,7 @@ static esp_err_t nexus_increment_counter(uint64_t *new_counter) {
  * Receipt format (FROZEN PROTOCOL):
  * 
  * receipt_digest = keccak256(
- *     NEXUS_RCT_DOMAIN     || // 12 bytes - Domain separation (different from HWI)
+ *     anchor_RCT_DOMAIN     || // 12 bytes - Domain separation (different from HWI)
  *     hardware_identity    || // 32 bytes - Static device ID
  *     firmware_hash        || // 32 bytes - Firmware version binding
  *     execution_hash       || // 32 bytes - Computation result
@@ -378,7 +378,7 @@ static esp_err_t nexus_increment_counter(uint64_t *new_counter) {
  * 3. counter > last_seen_counter[hardware_identity]
  * 4. firmware_hash is in approved firmware versions
  */
-static esp_err_t nexus_generate_receipt(
+static esp_err_t anchor_generate_receipt(
     const uint8_t exec_hash[32], 
     uint8_t digest[32], 
     uint64_t *cnt
@@ -389,17 +389,17 @@ static esp_err_t nexus_generate_receipt(
     
     // 1. Get hardware identity
     uint8_t hw_id[32];
-    err = nexus_derive_hardware_identity(hw_id);
+    err = anchor_derive_hardware_identity(hw_id);
     if (err != ESP_OK) return err;
     
     // 2. Get firmware hash
     uint8_t fw_hash[32];
-    err = nexus_get_firmware_hash(fw_hash);
+    err = anchor_get_firmware_hash(fw_hash);
     if (err != ESP_OK) return err;
     
     // 3. Increment counter
     uint64_t counter_val;
-    err = nexus_increment_counter(&counter_val);
+    err = anchor_increment_counter(&counter_val);
     if (err != ESP_OK) return err;
 
     // 4. Build receipt material
@@ -407,8 +407,8 @@ static esp_err_t nexus_generate_receipt(
     size_t r_off = 0;
     
     // Domain tag (DIFFERENT from hardware identity domain)
-    memcpy(rct_material + r_off, NEXUS_RCT_DOMAIN, NEXUS_RCT_DOMAIN_LEN);
-    r_off += NEXUS_RCT_DOMAIN_LEN;
+    memcpy(rct_material + r_off, anchor_RCT_DOMAIN, anchor_RCT_DOMAIN_LEN);
+    r_off += anchor_RCT_DOMAIN_LEN;
     
     // Hardware identity
     memcpy(rct_material + r_off, hw_id, 32);
@@ -429,7 +429,7 @@ static esp_err_t nexus_generate_receipt(
 
     // 5. Hash to produce receipt digest
     // ⚠️ Uses placeholder Keccak - production needs Ethereum-compatible implementation
-    nexus_keccak256(rct_material, r_off, digest);
+    anchor_keccak256(rct_material, r_off, digest);
     
     *cnt = counter_val;
 
@@ -497,7 +497,7 @@ static void print_receipt_json(
 static void print_security_status(void) {
     printf("\n");
     printf("╔═══════════════════════════════════════════════════════════════╗\n");
-    printf("║          NEXUS OHR SECURITY STATUS REPORT                    ║\n");
+    printf("║          anchor OHR SECURITY STATUS REPORT                    ║\n");
     printf("╠═══════════════════════════════════════════════════════════════╣\n");
     
     // Chip type
@@ -558,7 +558,7 @@ static void print_security_status(void) {
 // ============================================================================
 extern "C" void app_main(void) {
     ESP_LOGI(TAG, "═══════════════════════════════════════════════════════════");
-    ESP_LOGI(TAG, "  NexusAnchor OHR - Hardware Identity & Receipt System");
+    ESP_LOGI(TAG, "  anchorAnchor OHR - Hardware Identity & Receipt System");
     ESP_LOGI(TAG, "  Version: Phase-2 Security Audit Compliant");
     ESP_LOGI(TAG, "═══════════════════════════════════════════════════════════");
     
@@ -577,7 +577,7 @@ extern "C" void app_main(void) {
     
     // 3. Derive and display hardware identity
     uint8_t hw_identity[32];
-    if (nexus_derive_hardware_identity(hw_identity) == ESP_OK) {
+    if (anchor_derive_hardware_identity(hw_identity) == ESP_OK) {
         printf("Hardware Identity: 0x");
         for(int i = 0; i < 32; i++) printf("%02x", hw_identity[i]);
         printf("\n\n");
@@ -599,10 +599,10 @@ extern "C" void app_main(void) {
     uint8_t receipt_digest[32];
     uint64_t counter;
     
-    if (nexus_generate_receipt(execution_result, receipt_digest, &counter) == ESP_OK) {
+    if (anchor_generate_receipt(execution_result, receipt_digest, &counter) == ESP_OK) {
         printf("\n");
         printf("═══════════════════════════════════════════════════════════\n");
-        printf("           NEXUS OHR ATTESTATION RECEIPT\n");
+        printf("           anchor OHR ATTESTATION RECEIPT\n");
         printf("═══════════════════════════════════════════════════════════\n");
         print_receipt_json(receipt_digest, hw_identity, counter);
         printf("═══════════════════════════════════════════════════════════\n\n");

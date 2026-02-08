@@ -8,7 +8,7 @@ use stylus_sdk::alloy_primitives::{FixedBytes, U256};
 // No wrapper struct is needed - #[entrypoint] goes INSIDE sol_storage!
 sol_storage! {
     #[entrypoint]
-    pub struct NexusAnchor {
+    pub struct anchorAnchor {
         uint256 verified_count;
         bytes32 last_receipt;
     }
@@ -17,7 +17,7 @@ sol_storage! {
 // Implement logic directly on the storage struct.
 // The #[public] macro generates the Router for this struct.
 #[public]
-impl NexusAnchor {
+impl anchorAnchor {
     pub fn verify_execution(&mut self, receipt_digest: FixedBytes<32>) {
         let current = self.verified_count.get();
         self.verified_count.set(current + U256::from(1));

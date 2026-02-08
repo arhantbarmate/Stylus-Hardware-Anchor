@@ -2,7 +2,7 @@
 
 ## 🔐 Privacy-First Design
 
-Nexus Protocol is built with **Privacy by Design** principles. We are committed to protecting user privacy through cryptographic verification rather than data collection.
+Stylus Hardware Anchor is built with **Privacy by Design** principles. We are committed to protecting user privacy through cryptographic verification rather than data collection.
 
 ## 📊 What Data We Process
 
@@ -19,7 +19,7 @@ The following data is permanently stored on Arbitrum blockchain:
 **Important:** All on-chain data is **cryptographic hashes**, not raw identifiable information.
 
 ### Off-Chain Data (Not Collected)
-Nexus Protocol **does not collect**:
+Stylus Hardware Anchor **does not collect**:
 - ❌ Personal names or email addresses
 - ❌ IP addresses or network metadata
 - ❌ Location data or GPS coordinates
@@ -86,7 +86,7 @@ When interacting with Arbitrum Sepolia:
 
 ### Who Cannot Access Private Data?
 **No one** - Because we don't collect it:
-- Nexus Protocol developers have no access to private keys
+- Stylus Hardware Anchor developers have no access to private keys
 - We cannot identify users beyond their blockchain addresses
 - We cannot track device usage or behavior
 
@@ -129,7 +129,7 @@ When interacting with Arbitrum Sepolia:
 
 ## 📧 Privacy Questions
 
-If you have questions about how Nexus Protocol handles privacy:
+If you have questions about how Stylus Hardware Anchor handles privacy:
 - **Email:** arhant6armate@gmail.com
 - **GitHub Discussions:** Open a discussion in our repository
 - **Security Concerns:** See SECURITY.md for responsible disclosure
@@ -148,7 +148,7 @@ We may update this privacy policy as the protocol evolves. Changes will be:
 ## 🎯 Summary
 
 **In Plain English:**
-- Nexus Protocol only stores cryptographic hashes on-chain
+- Stylus Hardware Anchor only stores cryptographic hashes on-chain
 - We don't collect your name, email, location, or any personal data
 - Everything is public blockchain data - no secrets, no tracking
 - You control your private keys - we can't access them
@@ -156,4 +156,4 @@ We may update this privacy policy as the protocol evolves. Changes will be:
 
 ---
 
-© 2026 Nexus Protocol · Built for Privacy
+© 2026 Stylus Hardware Anchor · Built for Privacy

@@ -4,7 +4,7 @@
 
 **Please do not open public GitHub issues for security vulnerabilities.**
 
-Nexus Protocol takes security seriously. If you discover a security vulnerability, we appreciate your help in disclosing it to us responsibly.
+Stylus Hardware Anchor takes security seriously. If you discover a security vulnerability, we appreciate your help in disclosing it to us responsibly.
 
 ### How to Report
 
@@ -43,7 +43,7 @@ Nexus Protocol takes security seriously. If you discover a security vulnerabilit
 
 ## 🛡️ Security Measures
 
-Nexus Protocol implements multiple layers of security:
+Stylus Hardware Anchor implements multiple layers of security:
 
 ### Smart Contract Security
 - **Replay protection:** Monotonic counter validation
@@ -84,7 +84,7 @@ Nexus Protocol implements multiple layers of security:
 We publish security advisories at:
 - **GitHub Security Advisories:** [Your repo]/security/advisories
 - **Discord Announcements:** [Your Discord] (if applicable)
-- **Twitter/X:** @NexusProtocol (if applicable)
+- **Twitter/X:** @anchorProtocol (if applicable)
 
 ## 🏆 Security Hall of Fame
 

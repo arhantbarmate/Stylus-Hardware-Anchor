@@ -1,4 +1,4 @@
-# Technical Challenges & Solutions — Nexus Protocol
+# Technical Challenges & Solutions — Stylus Hardware Anchor
 
 This document outlines the critical engineering hurdles encountered during the development of Milestone 1, from initial environment setup to on-chain verification.
 
@@ -145,7 +145,7 @@ fn main() {
 `Cargo.toml`:
 ```toml
 [[bin]]
-name = "nexus_anchor"
+name = "anchor_anchor"
 path = "src/main.rs"
 ```
 
@@ -172,4 +172,4 @@ cargo stylus deploy \
 
 ---
 
-© 2026 Nexus Protocol · Arbitrum Foundation Grant Submission
+© 2026 Stylus Hardware Anchor · Arbitrum Foundation Grant Submission

@@ -1,5 +1,5 @@
 idf_component_register(
-SRCS "nexus_ohr.cpp"
+SRCS "anchor_ohr.cpp"
 INCLUDE_DIRS "."
 PRIV_REQUIRES
 nvs_flash

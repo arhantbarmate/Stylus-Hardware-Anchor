@@ -1,7 +1,7 @@
 # Milestone 1: Hardware-to-Blockchain Identity Binding
 
 ## Overview
-This milestone establishes the foundational hardware-to-blockchain link for the Nexus Protocol. We create a cryptographic binding between physical ESP32-S3 silicon and on-chain state on Arbitrum, enabling hardware-based permissioning and identity verification.
+This milestone establishes the foundational hardware-to-blockchain link for the Stylus Hardware Anchor. We create a cryptographic binding between physical ESP32-S3 silicon and on-chain state on Arbitrum, enabling hardware-based permissioning and identity verification.
 
 ---------------------------------------------------------------------
 {T} STATUS: ✅ COMPLETE (Milestone scope)
@@ -10,7 +10,7 @@ This milestone establishes the foundational hardware-to-blockchain link for the 
 ## Deliverables
 
 ### 1. Smart Contract Deployment ✅
-**Contract:** Nexus Anchor  
+**Contract:** anchor Anchor  
 **Address:** `0x34645ff1dd8af86176fe6b28812aaa4d85e33b0d`  
 **Network:** Arbitrum Sepolia (Stylus)  
 **Technology:** Rust compiled to WASM  
@@ -51,7 +51,7 @@ This milestone establishes the foundational hardware-to-blockchain link for the 
 
 | Field | Size | Description |
 |-------|------|-------------|
-| Protocol ID | 12 bytes | "NEXUS_RCT_V1" |
+| Protocol ID | 12 bytes | "anchor_RCT_V1" |
 | Hardware ID | 32 bytes | Keccak-256(eFuse data) |
 | Firmware Hash | 32 bytes | Keccak-256(firmware binary) |
 | Execution Hash | 32 bytes | Keccak-256(computation result) |
@@ -79,7 +79,7 @@ graph TD
     end
 
     subgraph L2 [LAYER 2: SMART CONTRACT]
-    D --> E[Nexus Anchor - Rust/Stylus]
+    D --> E[anchor Anchor - Rust/Stylus]
     E --> F[Storage: authorized_nodes, counters, approved_firmware]
     end
 
@@ -112,7 +112,7 @@ graph TD
 type U64 = Uint<64, 1>;
 
 #[storage]
-pub struct NexusAnchor {
+pub struct anchorAnchor {
     authorized_nodes: StorageMap<FixedBytes<32>, StorageBool>,
     counters: StorageMap<FixedBytes<32>, StorageU64>,
     approved_firmware: StorageMap<FixedBytes<32>, StorageBool>,
@@ -194,7 +194,7 @@ All tests completed successfully. Initial state verified at 0, followed by succe
 
 ### Repository Structure
 ```
-nexus-protocol/
+stylus-hardware-anchor/
 ├── contracts/
 ├── ohr_firmware/
 ├── scripts/
@@ -215,19 +215,19 @@ nexus-protocol/
 
 **Q: Does this verify computation correctness?** A: No, this milestone establishes identity. Correctness is a later milestone.
 
-**Q: Why not just use signatures?** A: Nexus binds receipts to hardware trust anchors, not transient keys.
+**Q: Why not just use signatures?** A: anchor binds receipts to hardware trust anchors, not transient keys.
 
 ---
 
 ## Next Steps
 ```mermaid
 timeline
-    title Nexus Roadmap
+    title anchor Roadmap
     Milestone 1 : COMPLETE : Identity Binding
     Milestone 2 : ACTIVE : Firmware Attestation
     Milestone 3 : PLANNED : Multi-Node Orchestration
 ```
 
 ---------------------------------------------------------------------
-© 2026 Nexus Protocol · Arbitrum Foundation Grant Submission
+© 2026 Stylus Hardware Anchor · Arbitrum Foundation Grant Submission
 ---------------------------------------------------------------------
