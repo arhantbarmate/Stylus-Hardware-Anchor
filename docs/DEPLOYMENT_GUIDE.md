@@ -576,7 +576,7 @@ Ensure Keccak-256 remains Ethereum-compatible before any mainnet use (mainnet is
 ```bash
 # The hardware identity is displayed on boot
 # Look for line:
-# Hardware Identity: 0x[64 hex characters]
+# Hardware Identity: 0x<your_32_byte_hardware_id_hex>
 
 # Example:
 # Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
@@ -882,7 +882,7 @@ python3 scripts/authorize_hardware.py --hw-id $HW_ID
 # ✓ Account loaded: 0xYourAddress
 #   Balance: 0.05 ETH
 # 
-# ✓ Hardware ID: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
+# ✓ Hardware ID: 0x<your_32_byte_hardware_id_hex>
 # 
 # ⏳ Building authorization transaction...
 # ⏳ Sending transaction...
@@ -1404,7 +1404,8 @@ To unlock full verification:
   - [ ] Replay attack rejected
 
 - [ ] **On-Chain Verification** (optional for testing)
-  - [ ] `verify_receipt()` called
+  - [ ] `verifyReceipt(...)` called
+  - [ ] `verifyReceiptsBatchBitsetBytes(...)` batch test (optional)
   - [ ] Transaction successful
   - [ ] Counter updated on-chain
 

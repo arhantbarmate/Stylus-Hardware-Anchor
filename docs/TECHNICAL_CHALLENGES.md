@@ -174,4 +174,20 @@ cargo stylus deploy \
 
 ---
 
+## 6. ABI Export and Function Naming (Stylus SDK 0.6.x)
+
+**Problem:** Initial confusion between Rust snake_case function names and the camelCase ABI names exported by Stylus SDK 0.6.x, leading to `cast` selector mismatches and transaction reverts.
+
+**Resolution Status:** ✅ Resolved. All documentation and scripts now use the exported camelCase names (e.g., `verifyReceipt`, `authorizeNode`, `getOwner`).
+
+---
+
+## 7. Batch Verification ABI Compatibility
+
+**Problem:** Stylus exports `Vec<u8>` as `uint8[]`, which made `cast` calls using `bytes` selectors revert. Added ABI-friendly wrapper functions accepting `bytes` and forwarding to the core batch logic.
+
+**Resolution Status:** ✅ Resolved. Added `verifyReceiptsBatchBitsetBytes(bytes)` and `verifyReceiptsBatchBytes(bytes)` wrappers; benchmarks now succeed with `status: 1`.
+
+---
+
 © 2026 Stylus Hardware Anchor · Arbitrum Foundation Grant Submission

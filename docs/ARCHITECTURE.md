@@ -190,6 +190,8 @@ pub struct anchorAnchor {
 | Function | Purpose | Gas Cost (est.) |
 |----------|---------|-----------------|
 | `verifyReceipt(...)` | Verify execution attestation | ~100k gas |
+| `verifyReceiptsBatchBitsetBytes(...)` | Batch verify packed receipts | ~12.5k–29.7k gas/receipt (amortizes) |
+| *Note:* Stylus enables high-throughput hardware receipt verification via WASM batch execution when applications need to verify many receipts in a single transaction; otherwise, single verification remains available. |
 
 **Query Functions** (View - Free):
 
@@ -265,9 +267,11 @@ const RECEIPT_MATERIAL_SIZE: usize = 117;  // 13 + 32 + 32 + 32 + 8
 
 ```
 FUNCTION verifyReceipt(hw_id, fw_hash, exec_hash, counter, claimed_digest)
+FUNCTION verifyReceiptsBatchBitsetBytes(packed_bytes_blob)
 
   ┌──────────────────────────────────────────────────────┐
   │ STAGE 1: Identity Allowlist Check                   │
+  │   - isNodeAuthorized(hw_id) must be true           │
   └──────────────────────────────────────────────────────┘
   
   IF authorized_nodes[hw_id] != TRUE THEN

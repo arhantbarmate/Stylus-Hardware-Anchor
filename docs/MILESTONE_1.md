@@ -118,6 +118,9 @@ pub struct anchorAnchor {
     approved_firmware: StorageMap<FixedBytes<32>, StorageBool>,
 }
 
+// Batch verification (new)
+pub fn verify_receipts_batch_bitset_bytes(&self, packed: Bytes) -> FixedBytes<32> { ... }
+
 pub fn verify_receipt(
     &mut self,
     hw_id: FixedBytes<32>,

@@ -16,7 +16,7 @@ The `.env` file should define:
 
 ```bash
 export RPC="${RPC_URL:-https://sepolia-rollup.arbitrum.io/rpc}"
-export CONTRACT="${CONTRACT_ADDRESS:-0x0000000000000000000000000000000000000000}"
+export CONTRACT="${CONTRACT_ADDRESS}"
 
 # If you use a key file:
 export PK="0x$(cat stylus_anchor/stylus_hardware_anchor/deployer.key | tr -d '\r\n' | sed 's/^0x//')"
@@ -65,6 +65,17 @@ cast send $CONTRACT "verifyReceipt(bytes32,bytes32,bytes32,uint64,bytes32)" \
   <counter_uint64> \
   0x<claimed_digest> \
   --rpc-url $RPC --private-key "$PK" -v
+```
+
+## Batch receipt verification (new)
+
+```bash
+# Generate packed receipts off-chain (see scripts/benchmark_receipts.py)
+# Then submit as a single bytes blob
+cast send $CONTRACT "verifyReceiptsBatchBitsetBytes(bytes)" \
+  0x<packed_receipts_blob> \
+  --rpc-url $RPC \
+  --private-key $PK -v
 ```
 
 ## ABI export (Stylus SDK 0.6.x)

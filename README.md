@@ -10,7 +10,7 @@
 
 Stylus Hardware Anchor (SHA) is a reusable hardware identity verification primitive designed for Stylus smart contracts. It cryptographically binds immutable ESP32-S3 eFuse identifiers to on-chain execution logic, enabling deterministic device identity, replay-safe receipts, and firmware-governed access control.
 
-Preliminary benchmark: ~45k gas per verification on Arbitrum Sepolia under controlled test conditions.
+Preliminary benchmark: ~12.5k–29.7k gas per receipt in batched verification on Arbitrum Sepolia (amortization improves with batch size; see BENCHMARKS.md). Stylus enables high-throughput hardware receipt verification via WASM batch execution when applications need to verify many receipts in a single transaction; otherwise, single verification remains available.
 
 ---
 
@@ -62,6 +62,7 @@ Configuration is environment-driven:
 |----------|------|
 | Stylus Contract | Set `CONTRACT_ADDRESS` in `.env` and inspect on Arbiscan |
 | Verification TX | Use your local transaction hashes (not committed) |
+| Gas Benchmarks | See `BENCHMARKS.md` for batch verification results |
 | v1.0.0 Prototype Release | [View Release](https://github.com/arhantbarmate/stylus-hardware-anchor/releases/tag/v1.0.0) |
 
 ---

@@ -272,7 +272,7 @@ pio device monitor --baud 115200
 The device will output diagnostic information. Look for a line like this:
 
 ```
-Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
+Hardware Identity: 0x<your_32_byte_hardware_id_hex>
 ```
 
 > 📋 **Important:** Copy this entire 64-character hexadecimal string. You will need it for authorization.

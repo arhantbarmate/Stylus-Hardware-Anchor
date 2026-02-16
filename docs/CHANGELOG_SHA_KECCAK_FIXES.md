@@ -171,3 +171,5 @@ These are architectural observations, not defects:
 4. **Legacy Deployments**
    - Earlier deployments without owner-gated admin functions should be treated as deprecated
    - Current deployments should enforce owner gating and be the only addresses referenced by tooling
+
+5. **Added `verifyReceiptsBatchBitsetBytes(bytes)` and `verifyReceiptsBatchBytes(bytes)` ABI-friendly wrappers to enable `cast` calls with `bytes` selectors; batch benchmarks now succeed with `status: 1`.
