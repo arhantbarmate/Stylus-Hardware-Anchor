@@ -280,7 +280,6 @@ impl StylusHardwareAnchor {
             return false;
         }
 
-
         let hw_id = FixedBytes::<32>::from_slice(&receipt[1..33]);
         let fw_hash = FixedBytes::<32>::from_slice(&receipt[33..65]);
         let exec_hash = FixedBytes::<32>::from_slice(&receipt[65..97]);
