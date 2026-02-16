@@ -99,7 +99,7 @@ impl StylusHardwareAnchor {
             return Vec::new();
         }
 
-        if packed.len() % PACKED_RECEIPT_LEN != 0 {
+        if !packed.len().is_multiple_of(PACKED_RECEIPT_LEN) {
             return Vec::new();
         }
 
@@ -126,7 +126,7 @@ impl StylusHardwareAnchor {
             return FixedBytes::<32>::ZERO;
         }
 
-        if packed.len() % PACKED_RECEIPT_LEN != 0 {
+        if !packed.len().is_multiple_of(PACKED_RECEIPT_LEN) {
             return FixedBytes::<32>::ZERO;
         }
 
@@ -161,7 +161,7 @@ impl StylusHardwareAnchor {
             return Vec::new();
         }
 
-        if packed.len() % PACKED_RECEIPT_V2_LEN != 0 {
+        if !packed.len().is_multiple_of(PACKED_RECEIPT_V2_LEN) {
             return Vec::new();
         }
 
@@ -173,7 +173,7 @@ impl StylusHardwareAnchor {
             let start = i * PACKED_RECEIPT_V2_LEN;
             let end = start + PACKED_RECEIPT_V2_LEN;
             let receipt = &packed[start..end];
-            digests.push(Self::compute_digest_from_packed_v2(chain_id, receipt));
+            digests.push(Self::compute_digest_from_packed_v1(chain_id, receipt));
         }
 
         digests
@@ -263,7 +263,7 @@ impl StylusHardwareAnchor {
 
         let hw_id = FixedBytes::<32>::from_slice(&receipt[1..33]);
         let fw_hash = FixedBytes::<32>::from_slice(&receipt[33..65]);
-        let exec_hash = FixedBytes::<32>::from_slice(&receipt[65..97]);
+        let _exec_hash = FixedBytes::<32>::from_slice(&receipt[65..97]);
         let counter = u64::from_be_bytes(receipt[97..105].try_into().unwrap());
         let claimed_digest = FixedBytes::<32>::from_slice(&receipt[105..137]);
 
@@ -280,25 +280,20 @@ impl StylusHardwareAnchor {
             return false;
         }
 
-        let reconstructed = Self::compute_digest(chain_id, hw_id, fw_hash, exec_hash, counter);
-        reconstructed == claimed_digest
-    }
-
-    fn compute_digest_from_packed_v2(chain_id: u64, receipt: &[u8]) -> FixedBytes<32> {
-        if receipt.len() != PACKED_RECEIPT_V2_LEN {
-            return FixedBytes::<32>::ZERO;
-        }
-
-        let version = receipt[0];
-        if version != 1 {
-            return FixedBytes::<32>::ZERO;
-        }
 
         let hw_id = FixedBytes::<32>::from_slice(&receipt[1..33]);
         let fw_hash = FixedBytes::<32>::from_slice(&receipt[33..65]);
         let exec_hash = FixedBytes::<32>::from_slice(&receipt[65..97]);
         let counter = u64::from_be_bytes(receipt[97..105].try_into().unwrap());
 
+        Self::compute_digest(chain_id, hw_id, fw_hash, exec_hash, counter) == claimed_digest
+    }
+
+    fn compute_digest_from_packed_v1(chain_id: u64, receipt: &[u8]) -> FixedBytes<32> {
+        let hw_id = FixedBytes::<32>::from_slice(&receipt[1..33]);
+        let fw_hash = FixedBytes::<32>::from_slice(&receipt[33..65]);
+        let exec_hash = FixedBytes::<32>::from_slice(&receipt[65..97]);
+        let counter = u64::from_be_bytes(receipt[97..105].try_into().unwrap());
         Self::compute_digest(chain_id, hw_id, fw_hash, exec_hash, counter)
     }
 

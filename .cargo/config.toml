@@ -1,0 +1,9 @@
+[target.x86_64-pc-windows-gnu]
+linker = "rust-lld.exe"
+
+[target.x86_64-pc-windows-msvc]
+linker = "rust-lld.exe"
+rustflags = ["-C", "link-arg=-fuse-ld=lld", "-C", "link-arg=-nostdlib"]
+
+[env]
+CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER = "rust-lld.exe"

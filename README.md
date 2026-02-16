@@ -67,6 +67,21 @@ Configuration is environment-driven:
 
 ---
 
+## 🧼 Optional (Cleaner Dev Workflow)
+
+For a cleaner development environment with isolated Python dependencies:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+```
+
+`requirements-dev.txt` includes `black` for code formatting and additional testing tools.
+
+---
+
 ## 🛠️ Architecture Overview
 
 ### 1️⃣ Silicon Layer (ESP32-S3)

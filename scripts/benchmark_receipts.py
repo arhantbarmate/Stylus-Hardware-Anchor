@@ -28,7 +28,9 @@ def _u64be(x: int) -> bytes:
     return x.to_bytes(8, "big")
 
 
-def compute_digest(chain_id: int, hw_id: bytes, fw_hash: bytes, exec_hash: bytes, counter: int) -> bytes:
+def compute_digest(
+    chain_id: int, hw_id: bytes, fw_hash: bytes, exec_hash: bytes, counter: int
+) -> bytes:
     material = DOMAIN + _u64be(chain_id) + hw_id + fw_hash + exec_hash + _u64be(counter)
     return keccak(material)
 
@@ -58,7 +60,9 @@ class SingleArgs:
     claimed_digest_bad: bytes
 
 
-def make_single_args(chain_id: int, hw_id: bytes, fw_hash: bytes, counter: int) -> SingleArgs:
+def make_single_args(
+    chain_id: int, hw_id: bytes, fw_hash: bytes, counter: int
+) -> SingleArgs:
     ex = exec_hash_for(counter)
     d = compute_digest(chain_id, hw_id, fw_hash, ex, counter)
     bad = bytearray(d)
@@ -66,7 +70,9 @@ def make_single_args(chain_id: int, hw_id: bytes, fw_hash: bytes, counter: int) 
     return SingleArgs(exec_hash=ex, claimed_digest=d, claimed_digest_bad=bytes(bad))
 
 
-def make_packed_batch(chain_id: int, hw_id: bytes, fw_hash: bytes, start_counter: int, n: int) -> bytes:
+def make_packed_batch(
+    chain_id: int, hw_id: bytes, fw_hash: bytes, start_counter: int, n: int
+) -> bytes:
     out = bytearray()
     for i in range(n):
         counter = start_counter + i
@@ -78,7 +84,11 @@ def make_packed_batch(chain_id: int, hw_id: bytes, fw_hash: bytes, start_counter
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--chain-id", type=int, default=int(os.environ.get("CHAIN_ID", CHAIN_ID_DEFAULT)))
+    p.add_argument(
+        "--chain-id",
+        type=int,
+        default=int(os.environ.get("CHAIN_ID", CHAIN_ID_DEFAULT)),
+    )
     p.add_argument("--hw-id", type=str, default=os.environ.get("HW_ID"))
     p.add_argument("--fw-hash", type=str, default=os.environ.get("FW_HASH"))
     p.add_argument("--start-counter", type=int, default=1)
@@ -86,13 +96,17 @@ def main() -> None:
     args = p.parse_args()
 
     if not args.hw_id or not args.fw_hash:
-        raise SystemExit("Missing HW_ID or FW_HASH (set env vars or pass --hw-id/--fw-hash)")
+        raise SystemExit(
+            "Missing HW_ID or FW_HASH (set env vars or pass --hw-id/--fw-hash)"
+        )
 
     hw_id = _hex32_to_bytes(args.hw_id)
     fw_hash = _hex32_to_bytes(args.fw_hash)
 
     single = make_single_args(args.chain_id, hw_id, fw_hash, args.start_counter)
-    packed = make_packed_batch(args.chain_id, hw_id, fw_hash, args.start_counter, args.n)
+    packed = make_packed_batch(
+        args.chain_id, hw_id, fw_hash, args.start_counter, args.n
+    )
 
     print("SINGLE_ARGS")
     print(f"EXEC_HASH=0x{single.exec_hash.hex()}")

@@ -70,7 +70,9 @@ def _status(receipt: Dict[str, Any]) -> int:
     raise SystemExit(f"Unexpected status in receipt: {v}")
 
 
-def _send_and_measure(label: str, send_args: List[str], rpc_url: str) -> Tuple[str, int, int]:
+def _send_and_measure(
+    label: str, send_args: List[str], rpc_url: str
+) -> Tuple[str, int, int]:
     send = _cast_send_json(send_args)
     tx = send.get("transactionHash") or send.get("hash")
     if not tx:
@@ -87,7 +89,11 @@ def main() -> None:
     ap.add_argument("--private-key", default=os.environ.get("PRIVATE_KEY", ""))
     ap.add_argument("--hw-id", default=os.environ.get("HW_ID", ""))
     ap.add_argument("--fw-hash", default=os.environ.get("FW_HASH", ""))
-    ap.add_argument("--chain-id", type=int, default=int(os.environ.get("CHAIN_ID", CHAIN_ID_DEFAULT)))
+    ap.add_argument(
+        "--chain-id",
+        type=int,
+        default=int(os.environ.get("CHAIN_ID", CHAIN_ID_DEFAULT)),
+    )
     ap.add_argument("--setup", action="store_true")
     ap.add_argument("--batch-fn", choices=["bitset", "bool"], default="bitset")
     ap.add_argument("--sizes", default="5,10,20,50")
@@ -193,7 +199,9 @@ def main() -> None:
         ],
         rpc_url,
     )
-    results.append({"label": "verifyReceipt success", "tx": tx, "gasUsed": gas, "status": st})
+    results.append(
+        {"label": "verifyReceipt success", "tx": tx, "gasUsed": gas, "status": st}
+    )
 
     tx, gas, st = _send_and_measure(
         "single_invalid_digest",
@@ -214,7 +222,14 @@ def main() -> None:
         ],
         rpc_url,
     )
-    results.append({"label": "verifyReceipt invalid digest", "tx": tx, "gasUsed": gas, "status": st})
+    results.append(
+        {
+            "label": "verifyReceipt invalid digest",
+            "tx": tx,
+            "gasUsed": gas,
+            "status": st,
+        }
+    )
 
     any_failed = any(r.get("status") != 1 for r in results)
     print(

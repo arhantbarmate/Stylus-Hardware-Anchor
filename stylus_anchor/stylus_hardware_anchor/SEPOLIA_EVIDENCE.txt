@@ -1,0 +1,47 @@
+Evidence Bundle (Arbitrum Sepolia Stylus deployment)
+A) Source provenance (git)
+Git commit (repo state)
+49a5abbf8fd56fd03a31fa79809122b79e8cce1b
+B) Build artifact identity (WASM)
+WASM path
+stylus_anchor/stylus_hardware_anchor/target/wasm32-unknown-unknown/release/stylus_hardware_anchor.wasm
+WASM SHA-256
+4c00997c2bb00e8b786f2ea9d4e3eb87600bf6995bf4e3dd4debf6c473a5bd26
+C) Network / chain
+RPC chain-id output
+421614 (Arbitrum Sepolia)
+D) Deployment facts (on-chain)
+Contract address
+0xd661a1ab8cefaacd78f4b968670c3bc438415615
+1) Deploy transaction
+Deploy tx hash
+0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
+Receipt highlights
+status 1 (success)
+blockNumber 242934095
+from 0xe56B9E5527ff91fd888F4479206ee21D9eae833D
+contractAddress 0xd661a1ab8cefaacd78f4b968670c3bc438415615
+gasUsed 13280
+gasUsedForL1 15921
+l1BlockNumber 10270152
+2) Activation transaction
+Activation tx hash
+0x353d26f4dea36a4410454b7b081cc41610f691dfea7ce29d5c9b1e9aa968f955
+Receipt highlights
+status 1 (success)
+blockNumber 242934098
+from 0xe56B9E5527ff91fd888F4479206ee21D9eae833D
+to 0x0000000000000000000000000000000000000071
+gasUsed 3713837
+gasUsedForL1 19383
+l1BlockNumber 10270152
+E) Code existence proof (bytecode prefix)
+cast code prefix (first 120 chars)
+0xeff000001be77e4506828d03d026869b8c429a39494501543d25d02143ca7c0ae07c80384a4ddb072d9e0a82b0ac33a45fa9469be4c6f063e8cd2d
+F) Contract behavior proofs (read calls)
+Owner
+getOwner()(address) -> 0xe56B9E5527ff91fd888F4479206ee21D9eae833D
+Authorization state (sample node id 0x11..11)
+isNodeAuthorized(bytes32)(bool) -> true
+Counter state (same node id)
+getCounter(bytes32)(uint64) -> 0
