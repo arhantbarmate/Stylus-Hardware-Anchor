@@ -85,7 +85,7 @@ pub fn get_zk_verify_count(&self) -> U256
 ## ZKP Integration (via vlayer)
 
 SHA v2 extends hardware identity with ZK execution correctness proofs.
-See [`feat/zkp-vlayer-integration`](https://github.com/.../tree/feat/zkp-vlayer-integration)
+See [`feat/zkp-vlayer-integration`](https://github.com/arhantbarmate/stylus-hardware-anchor/tree/feat/zkp-vlayer-integration)
 and [`docs/zkp/`](docs/zkp/) for full specification.
 
 | Layer | Guarantee |

@@ -138,9 +138,9 @@ No existing integrations break.
 
 ## Links
 
-- [Main README](../README.md)
-- [Architecture Doc](../docs/zkp/ARCHITECTURE.md)
-- [Circuit Spec](../docs/zkp/CIRCUIT_SPEC.md)
-- [ZK Roadmap](../docs/zkp/ZK_ROADMAP.md)
-- [Integration Guide](../docs/zkp/INTEGRATION.md)
+- [Main README](../../README.md)
+- [Architecture Doc](ARCHITECTURE.md)
+- [Circuit Spec](CIRCUIT_SPEC.md)
+- [ZK Roadmap](ZK_ROADMAP.md)
+- [Integration Guide](INTEGRATION.md)
 - [Live Contract on Sepolia](https://sepolia.arbiscan.io/address/0xD661a1aB8CEFaaCd78F4B968670C3bC438415615)
