@@ -10,8 +10,8 @@ Build Profile: release
 
 This benchmark is intended to be used alongside the Sepolia evidence bundle for this deployment:
 
-- Commit: (fill)
-- WASM sha256: (fill)
+- Commit: 49a5abbf8fd56fd03a31fa79809122b79e8cce1b
+- WASM sha256: 4c00997c2bb00e8b786f2ea9d4e3eb87600bf6995bf4e3dd4debf6c473a5bd26
 - Deploy tx: 0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
 - Activate tx: 0x353d26f4dea36a4410454b7b081cc41610f691dfea7ce29d5c9b1e9aa968f955
 
