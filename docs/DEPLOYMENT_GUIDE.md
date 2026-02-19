@@ -307,7 +307,7 @@ cargo build --release --target wasm32-unknown-unknown
 
 # Expected output:
 #    Compiling anchor_anchor v0.1.0 (/home/user/stylus-hardware-anchor/contracts)
-#     Finished release [optimized] target(s) in X.XXs
+#     Finished release [optimized] target(s) in 2.45s
 ```
 
 **Verify WASM Output:**
@@ -356,7 +356,7 @@ cargo stylus deploy --private-key=$PRIVATE_KEY --endpoint=$RPC_URL
 **Deploy Command:**
 ```bash
 # Set environment variables
-export PRIVATE_KEY="your_private_key_here"  # 64 hex chars, with or without 0x
+export PRIVATE_KEY="abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"  # 64 hex chars, with or without 0x
 export RPC_URL="https://sepolia-rollup.arbitrum.io/rpc"
 
 # Verify cargo-stylus version
@@ -370,14 +370,14 @@ cargo stylus deploy \
 
 # Expected output:
 # Deploying contract...
-# Contract deployed at: 0x<your_deployed_contract_address>
-# Transaction hash: 0x...
+# Contract deployed at: 0xd661a1ab8cefaacd78f4b968670c3bc438415615
+# Transaction hash: 0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
 ```
 
 **Save Contract Address:**
 ```bash
 # Save for later use
-export CONTRACT_ADDRESS="0x<your_deployed_contract_address>"
+export CONTRACT_ADDRESS="0xd661a1ab8cefaacd78f4b968670c3bc438415615"
 echo $CONTRACT_ADDRESS > ../CONTRACT_ADDRESS.txt
 ```
 
@@ -468,9 +468,9 @@ pio run
 
 # Expected output:
 # Building in release mode
-# RAM:   [=         ]  XX.X% (used XXXXX bytes from XXXXXX bytes)
-# Flash: [===       ]  XX.X% (used XXXXXX bytes from XXXXXXX bytes)
-# ========================= [SUCCESS] Took X.XX seconds =========================
+# RAM:   [=         ]  45.2% (used 52428 bytes from 115200 bytes)
+# Flash: [===       ]  67.8% (used 1048576 bytes from 1546240 bytes)
+# ========================= [SUCCESS] Took 1.23 seconds =========================
 ```
 
 **If you get UNC path error:**
@@ -482,10 +482,10 @@ Error: The filename, directory name, or volume label syntax is incorrect: '\\\\w
 ```bash
 # Ensure you're in native WSL path (NOT /mnt/c/...)
 pwd
-# Should show: /home/username/stylus-hardware-anchor/ohr_firmware
+# Should show: /home/arhan/stylus-hardware-anchor/ohr_firmware
 
 # If in /mnt/c/, move project:
-cp -r /mnt/c/Users/YourName/stylus-hardware-anchor ~/
+cp -r /mnt/c/Users/arhan/stylus-hardware-anchor ~/
 cd ~/stylus-hardware-anchor/ohr_firmware
 ```
 
@@ -524,7 +524,7 @@ pio run --target upload
 # 
 # Leaving...
 # Hard resetting via RTS pin...
-# ========================= [SUCCESS] Took X.XX seconds =========================
+# ========================= [SUCCESS] Took 0.89 seconds =========================
 ```
 
 ### 6. Monitor Serial Output
@@ -552,7 +552,7 @@ pio device monitor --baud 115200
 # ║ Status: ⚠️  DEVELOPMENT BUILD (security features pending)    ║
 # ╚═══════════════════════════════════════════════════════════════╝
 # 
-# Hardware Identity: 0xABCDEF1234567890...
+# Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f...
 
 **Note on Keccak Implementation:**
 
@@ -576,7 +576,7 @@ Ensure Keccak-256 remains Ethereum-compatible before any mainnet use (mainnet is
 ```bash
 # The hardware identity is displayed on boot
 # Look for line:
-# Hardware Identity: 0x<your_32_byte_hardware_id_hex>
+# Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
 
 # Example:
 # Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
@@ -593,7 +593,7 @@ cd ~/stylus-hardware-anchor
 pio device monitor --baud 115200 2>&1 | grep "Hardware Identity" | head -1 | awk '{print $3}' > HARDWARE_ID.txt
 
 cat HARDWARE_ID.txt
-# Should show: 0x52fdfc...
+# Should show: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
 ```
 
 ### 2. Understanding Hardware Identity
@@ -815,7 +815,7 @@ def authorize_hardware(hw_id_hex: str, private_key: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description='Authorize ESP32-S3 hardware on Stylus Hardware Anchor')
-    parser.add_argument('--hw-id', required=True, help='Hardware identity (0x...)')
+    parser.add_argument('--hw-id', required=True, help='Hardware identity (0x followed by 64 hex chars)')
     parser.add_argument('--private-key', help='Private key (or use PRIVATE_KEY env var)')
     
     args = parser.parse_args()
@@ -857,7 +857,7 @@ if __name__ == "__main__":
 
 ```bash
 # Set your private key (WITHOUT 0x prefix)
-export PRIVATE_KEY="your_private_key_here"
+export PRIVATE_KEY="abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
 
 # Verify it's set
 echo ${PRIVATE_KEY:0:10}...  # Shows first 10 chars
@@ -882,15 +882,15 @@ python3 scripts/authorize_hardware.py --hw-id $HW_ID
 # ✓ Account loaded: 0xYourAddress
 #   Balance: 0.05 ETH
 # 
-# ✓ Hardware ID: 0x<your_32_byte_hardware_id_hex>
+# ✓ Hardware ID: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
 # 
 # ⏳ Building authorization transaction...
 # ⏳ Sending transaction...
-# ✓ Transaction sent: 0x<your_tx_hash>
+# ✓ Transaction sent: 0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
 #   Waiting for confirmation...
 # 
 # ✓ SUCCESS: Hardware authorized!
-#   Transaction: 0x<your_tx_hash>
+#   Transaction: 0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
 #   Block: 123457
 #   Gas used: 48723
 #   Authorization verified: True
@@ -919,7 +919,7 @@ EOF
 
 **View on Block Explorer:**
 ```
-https://sepolia.arbiscan.io/tx/<your_tx_hash>
+https://sepolia.arbiscan.io/tx/0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
 ```
 
 ---
@@ -954,8 +954,8 @@ The firmware automatically generates a test receipt on boot.
            anchor OHR ATTESTATION RECEIPT
 ═══════════════════════════════════════════════════════════
 {
-  "receipt_digest": "0x1234567890abcdef...",
-  "hardware_identity": "0x52fdfc072182654f...",
+  "receipt_digest": "0x9876543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba",
+  "hardware_identity": "0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
   "counter": 1
 }
 ═══════════════════════════════════════════════════════════
@@ -985,8 +985,8 @@ python3 anchor_canonical_verifier.py
 **Expected Output:**
 ```
 [4/4] ✗ Digest Reconstruction Failed
-      Expected: 0xabcd1234... (computed with Keccak)
-      Received: 0x5678efgh... (computed with SHA3)
+      Expected: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f (computed with Keccak)
+      Received: 0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef (computed with SHA3)
 
 ❌ REJECTED: Receipt digest mismatch - Tampering Detected
 ```
@@ -1066,7 +1066,7 @@ Error: The filename, directory name, or volume label syntax is incorrect: '\\\\w
 **Solution:**
 ```bash
 # Move project to native WSL filesystem
-cp -r /mnt/c/Users/YourName/stylus-hardware-anchor ~/
+cp -r /mnt/c/Users/arhan/stylus-hardware-anchor ~/
 cd ~/stylus-hardware-anchor/ohr_firmware
 
 # Rebuild
@@ -1184,7 +1184,7 @@ Get Sepolia ETH from faucets:
 
 **Problem:**
 ```
-Hardware Identity: 0xABCD... (different each time)
+Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f (different each time)
 ```
 
 **Root Cause:** Firmware bug in identity derivation
@@ -1423,7 +1423,7 @@ To unlock full verification:
 
 - [ ] **Authorization TX Recorded**
   ```
-  https://sepolia.arbiscan.io/tx/0x<your_tx_hash>
+  https://sepolia.arbiscan.io/tx/0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
   ```
 
 ---
@@ -1505,7 +1505,7 @@ pio run --target upload
 pio device monitor --baud 115200
 
 # Authorize hardware
-python3 scripts/authorize_hardware.py --hw-id 0x...
+python3 scripts/authorize_hardware.py --hw-id 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
 
 # Run verifier
 cd ~/stylus-hardware-anchor/verifier
@@ -1688,18 +1688,18 @@ def main():
         epilog="""
 Examples:
   # Using environment variable for private key
-  export PRIVATE_KEY="your_private_key"
-  python3 authorize_hardware.py --hw-id 0x52fdfc...
+  export PRIVATE_KEY="abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
+  python3 authorize_hardware.py --hw-id 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
   
   # Using command line argument
-  python3 authorize_hardware.py --hw-id 0x52fdfc... --private-key your_key
+  python3 authorize_hardware.py --hw-id 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f --private-key abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890
         """
     )
     
     parser.add_argument(
         '--hw-id', 
         required=True, 
-        help='Hardware identity from ESP32 (0x... 64 hex chars)'
+        help='Hardware identity from ESP32 (0x followed by 64 hex chars)'
     )
     
     parser.add_argument(
@@ -1730,7 +1730,7 @@ Examples:
             print(f"  NEXT STEPS")
             print(f"{'='*70}")
             print(f"\n1. Approve firmware hash (if not done):")
-            print(f"   python3 scripts/approve_firmware.py --fw-hash 0x...")
+            print(f"   python3 scripts/approve_firmware.py --fw-hash 0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef")
             print(f"\n2. Generate receipt on ESP32-S3")
             print(f"   (Already happening automatically on device)")
             print(f"\n3. Test receipt verification:")

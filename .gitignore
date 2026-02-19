@@ -63,3 +63,11 @@ Thumbs.db
 *.wasm
 *.wat
 venv/
+
+# =====================================
+# Benchmark Results & Test Artifacts
+# =====================================
+bench_results.json
+*.bench
+ohr_firmware_stress_test/
+test_results/

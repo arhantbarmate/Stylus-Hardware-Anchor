@@ -522,13 +522,13 @@ let digest = keccak256(&data);  // Returns FixedBytes<32>
                       ↓
 ┌───────────────────────────────────────────────────────┐
 │  32-byte Hardware Identity (cached)                   │
-│  0xABCD...1234                                        │
+│  0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f                                        │
 └─────────────────────┬─────────────────────────────────┘
                       │
                       ↓
 ┌───────────────────────────────────────────────────────┐
 │  Display via Serial:                                  │
-│  "Hardware Identity: 0xABCD...1234"                   │
+│  "Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"                   │
 │  (User copies this to authorize on-chain)             │
 └───────────────────────────────────────────────────────┘
 ```
@@ -584,11 +584,11 @@ let digest = keccak256(&data);  // Returns FixedBytes<32>
 ┌───────────────────────────────────────────────────────┐
 │  Serialize as JSON                                    │
 │  {                                                    │
-│    "hardware_identity": "0x...",                      │
-│    "firmware_hash": "0x...",                          │
-│    "execution_hash": "0x...",                         │
+│    "hardware_identity": "0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",                      │
+│    "firmware_hash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",                          │
+│    "execution_hash": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",                         │
 │    "counter": 42,                                     │
-│    "receipt_digest": "0x..."                          │
+│    "receipt_digest": "0x9876543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba"                          │
 │  }                                                    │
 └─────────────────────┬─────────────────────────────────┘
                       │
@@ -1119,8 +1119,14 @@ def approve_firmware(fw_hash_hex: str) -> str:
     """Approve a firmware version"""
     fw_hash = bytes.fromhex(fw_hash_hex.replace('0x', ''))
     
-    # Similar to authorizeNode...
-    pass
+    # Build and send authorization transaction similar to authorizeNode
+    fw_hash_bytes = fw_hash  # Use the converted bytes
+    tx_hash = contract.functions.approveFirmware(fw_hash_bytes).transact({
+        'from': account.address,
+        'gas': 100000,
+        'gasPrice': w3.eth.gas_price,
+        'nonce': w3.eth.get_transaction_count(account.address)
+    })
 
 # ============================================================================
 # VERIFICATION
@@ -1426,7 +1432,7 @@ cargo stylus deploy \
   --endpoint=$RPC_URL
 
 # Save contract address
-export CONTRACT_ADDRESS="0x..."
+export CONTRACT_ADDRESS="0xd661a1ab8cefaacd78f4b968670c3bc438415615"
 ```
 
 #### 4. Verify Deployment
@@ -1478,7 +1484,7 @@ pio device monitor --baud 115200
 
 ```bash
 # Watch serial output for:
-# "Hardware Identity: 0xABCD...1234"
+# "Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
 
 # Copy this value for contract authorization
 ```
@@ -1495,7 +1501,7 @@ w3 = Web3(Web3.HTTPProvider('https://sepolia-rollup.arbitrum.io/rpc'))
 anchor = w3.eth.contract(address=CONTRACT_ADDRESS, abi=ABI)
 
 # Hardware identity from ESP32
-hw_id = "0xABCD...1234"  # From serial output
+hw_id = "0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"  # From serial output
 
 # Authorize
 account = Account.from_key(PRIVATE_KEY)
@@ -1515,7 +1521,7 @@ print(f"✓ Node authorized: {tx_hash.hex()}")
 
 ```python
 # Firmware hash from build output
-fw_hash = "0x1234...5678"  # From compilation
+fw_hash = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"  # From compilation
 
 # Approve
 tx = anchor.functions.approve_firmware(bytes.fromhex(fw_hash[2:])).build_transaction({
@@ -1533,7 +1539,7 @@ print(f"✓ Firmware approved: {tx_hash.hex()}")
 
 ```python
 # Receive receipt from ESP32 (via serial)
-receipt_json = '{"hardware_identity": "0x...", ...}'
+receipt_json = '{"hardware_identity": "0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f", "firmware_hash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef", "execution_hash": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890", "counter": 42, "receipt_digest": "0x9876543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba"}'
 receipt = json.loads(receipt_json)
 
 # Submit to contract

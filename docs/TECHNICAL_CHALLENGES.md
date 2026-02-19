@@ -151,7 +151,7 @@ path = "src/main.rs"
 
 4. **Fixed private key format:**
 - Created separate `private_key.txt` with only the hex key (no quotes, no variable names)
-- Format: `0x<64_character_hex_string>`
+- Format: `0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f`
 
 5. **Adjusted gas parameters:**
 ```bash

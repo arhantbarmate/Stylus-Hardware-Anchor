@@ -160,7 +160,7 @@ keccak256(material, 16, hw_id);
 ```python
 from web3 import Web3
 # Hardware ID from ESP32-S3
-hw_id = bytes.fromhex("abc123...")
+hw_id = bytes.fromhex("52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f")
 # Authorize on-chain
 tx_hash = anchor.functions.authorizeNode(hw_id).transact()
 print(f"✅ Authorized: {receipt['status'] == 1}")

@@ -213,7 +213,7 @@ Open Terminal and run:
 ls /dev/cu.*
 ```
 
-Look for `/dev/cu.usbserial-XXX` or `/dev/cu.usbmodemXXX`
+Look for `/dev/cu.usbserial-XXXX` or `/dev/cu.usbmodemXXXX` (where XXXX are device-specific characters)
 
 ### Linux
 
@@ -272,7 +272,7 @@ pio device monitor --baud 115200
 The device will output diagnostic information. Look for a line like this:
 
 ```
-Hardware Identity: 0x<your_32_byte_hardware_id_hex>
+Hardware Identity: 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
 ```
 
 > 📋 **Important:** Copy this entire 64-character hexadecimal string. You will need it for authorization.
@@ -306,13 +306,13 @@ Before authorizing your hardware on-chain, you need to set up your wallet creden
 **Windows (Command Prompt):**
 
 ```bash
-set PRIVATE_KEY=your_private_key_without_0x
+set PRIVATE_KEY=abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890
 ```
 
 **macOS / Linux:**
 
 ```bash
-export PRIVATE_KEY="your_private_key_without_0x"
+export PRIVATE_KEY="abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
 ```
 
 > ⚠️ **Important:** Remove the `0x` prefix from your private key before setting the variable.
@@ -334,7 +334,7 @@ cd ../scripts
 Run the authorization script with your Hardware ID:
 
 ```bash
-python authorize_hardware.py --hw-id YOUR_COPIED_HARDWARE_ID
+python authorize_hardware.py --hw-id 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f
 ```
 
 *Replace `YOUR_COPIED_HARDWARE_ID` with the 64-character hex string you copied from the serial monitor.*
@@ -349,10 +349,10 @@ python authorize_hardware.py --hw-id YOUR_COPIED_HARDWARE_ID
 ### Expected Output
 
 ```
-Transaction sent: 0x...
+Transaction sent: 0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
 Waiting for confirmation...
 ✅ Hardware Authorized!
-Transaction Hash: 0xabc123...
+Transaction Hash: 0x1a9eaa02f816d86a71f9bf234425e83b5c090d1f3e4f3691851964b71747a489
 ```
 
 ### 🎉 Success!

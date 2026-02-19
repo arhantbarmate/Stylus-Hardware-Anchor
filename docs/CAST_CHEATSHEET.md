@@ -36,9 +36,9 @@ cast call $CONTRACT "getOwner()(address)" --rpc-url $RPC
 ```bash
 cast call $CONTRACT "getOwner()(address)" --rpc-url $RPC
 
-cast call $CONTRACT "isNodeAuthorized(bytes32)(bool)" 0x<32-byte> --rpc-url $RPC
-cast call $CONTRACT "isFirmwareApproved(bytes32)(bool)" 0x<32-byte> --rpc-url $RPC
-cast call $CONTRACT "getCounter(bytes32)(uint64)" 0x<32-byte> --rpc-url $RPC
+cast call $CONTRACT "isNodeAuthorized(bytes32)(bool)" 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f --rpc-url $RPC
+cast call $CONTRACT "isFirmwareApproved(bytes32)(bool)" 0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef --rpc-url $RPC
+cast call $CONTRACT "getCounter(bytes32)(uint64)" 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f --rpc-url $RPC
 ```
 
 ## Owner/admin transactions
@@ -46,24 +46,24 @@ cast call $CONTRACT "getCounter(bytes32)(uint64)" 0x<32-byte> --rpc-url $RPC
 ```bash
 cast send $CONTRACT "initialize()" --rpc-url $RPC --private-key "$PK" -v
 
-cast send $CONTRACT "authorizeNode(bytes32)" 0x<32-byte> --rpc-url $RPC --private-key "$PK" -v
-cast send $CONTRACT "revokeNode(bytes32)" 0x<32-byte> --rpc-url $RPC --private-key "$PK" -v
+cast send $CONTRACT "authorizeNode(bytes32)" 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f --rpc-url $RPC --private-key "$PK" -v
+cast send $CONTRACT "revokeNode(bytes32)" 0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f --rpc-url $RPC --private-key "$PK" -v
 
-cast send $CONTRACT "approveFirmware(bytes32)" 0x<32-byte> --rpc-url $RPC --private-key "$PK" -v
-cast send $CONTRACT "revokeFirmware(bytes32)" 0x<32-byte> --rpc-url $RPC --private-key "$PK" -v
+cast send $CONTRACT "approveFirmware(bytes32)" 0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef --rpc-url $RPC --private-key "$PK" -v
+cast send $CONTRACT "revokeFirmware(bytes32)" 0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef --rpc-url $RPC --private-key "$PK" -v
 
-cast send $CONTRACT "transferOwnership(address)" 0x<newOwner> --rpc-url $RPC --private-key "$PK" -v
+cast send $CONTRACT "transferOwnership(address)" 0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef --rpc-url $RPC --private-key "$PK" -v
 ```
 
 ## Receipt verification transaction
 
 ```bash
 cast send $CONTRACT "verifyReceipt(bytes32,bytes32,bytes32,uint64,bytes32)" \
-  0x<hw_id> \
-  0x<fw_hash> \
-  0x<exec_hash> \
-  <counter_uint64> \
-  0x<claimed_digest> \
+  0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f \
+  0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef \
+  0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890 \
+  42 \
+  0x9876543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba \
   --rpc-url $RPC --private-key "$PK" -v
 ```
 
@@ -73,7 +73,7 @@ cast send $CONTRACT "verifyReceipt(bytes32,bytes32,bytes32,uint64,bytes32)" \
 # Generate packed receipts off-chain (see scripts/benchmark_receipts.py)
 # Then submit as a single bytes blob
 cast send $CONTRACT "verifyReceiptsBatchBitsetBytes(bytes)" \
-  0x<packed_receipts_blob> \
+  0x52fdfc072182654f163f5f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef \
   --rpc-url $RPC \
   --private-key $PK -v
 ```
