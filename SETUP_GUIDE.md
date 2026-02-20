@@ -600,7 +600,7 @@ You've successfully deployed hardware verification on Arbitrum!
 
 For a deep dive into how SHA works, read the architecture documentation:
 
-https://github.com/orthonode/Stylus-Hardware-Anchor/blob/main/docs/ARCHITECTURE.md
+https://github.com/arhantbarmate/stylus-hardware-anchor/blob/main/docs/ARCHITECTURE.md
 
 ### Watch the Demo
 
@@ -632,7 +632,7 @@ The next milestone will introduce:
 ### Official Links
 
 - **Website:** https://orthonode.xyz
-- **GitHub:** https://github.com/orthonode/Stylus-Hardware-Anchor
+- **GitHub:** https://github.com/arhantbarmate/stylus-hardware-anchor
 - **Contract (Sepolia):** `$CONTRACT_ADDRESS` (from your local `.env`)
 - **Twitter/X:** [@OrthonodeSys](https://twitter.com/OrthonodeSys)
 
