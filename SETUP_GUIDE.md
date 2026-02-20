@@ -554,6 +554,7 @@ python scripts/generate_test_receipt.py
 
 - **Batch verification**: Primary interface, works correctly
 - **Single verification**: Known counter synchronization issue under investigation  
+- **🔄 Replay Protection**: `verifyReceipt` reverts with `ReplayDetected()` after batch runs — this is correct behavior. The monotonic counter enforces that each receipt can only be processed once, demonstrating SHA's core security feature.
 - **Gas benchmarks**: See `BENCHMARKS.md` for detailed results
 
 > 💡 **Note**: Always use `--setup` on first run or after contract redeployment to initialize contract state.

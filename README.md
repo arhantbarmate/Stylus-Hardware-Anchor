@@ -16,6 +16,8 @@ Preliminary benchmark: ~12.5k–29.7k gas per receipt in batched verification on
 
 **⚠️ Known Limitation**: Single-call `verifyReceipt` has a counter synchronization issue with the batch verification path. Batch verification (the primary interface) works correctly and is the recommended integration pattern. Single-call verification is under investigation and will be addressed in v0.2 post-audit. The current deployed contract at `0xD661a1aB8CEFaaCd78F4B968670C3bC438415615` should be treated as a research prototype, not production infrastructure.
 
+**🔄 Replay Protection Working**: `verifyReceipt` single-call reverts with `ReplayDetected()` after batch runs — this is correct behavior. The monotonic counter enforces that each receipt can only be processed once. Batch and single verification share the same counter state by design, demonstrating SHA's core security feature.
+
 ---
 
 ## 🏗️ Hardware Identity Primitive for Stylus
