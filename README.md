@@ -12,6 +12,10 @@ Stylus Hardware Anchor (SHA) is a reusable hardware identity verification primit
 
 Preliminary benchmark: ~12.5k–29.7k gas per receipt in batched verification on Arbitrum Sepolia (amortization improves with batch size; see BENCHMARKS.md). Stylus enables high-throughput hardware receipt verification via WASM batch execution when applications need to verify many receipts in a single transaction; otherwise, single verification remains available.
 
+**🔧 Smart Setup**: Verification scripts automatically detect and initialize contract state (node authorization + firmware approval) when needed. Manual `--setup` flag is optional for explicit control.
+
+**⚠️ Known Limitation**: Single-call `verifyReceipt` has a counter synchronization issue with the batch verification path. Batch verification (the primary interface) works correctly and is the recommended integration pattern. Single-call verification is under investigation and will be addressed in v0.2 post-audit. The current deployed contract at `0xD661a1aB8CEFaaCd78F4B968670C3bC438415615` should be treated as a research prototype, not production infrastructure.
+
 ---
 
 ## 🏗️ Hardware Identity Primitive for Stylus

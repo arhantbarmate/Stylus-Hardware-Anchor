@@ -17,6 +17,20 @@ This benchmark is intended to be used alongside the Sepolia evidence bundle for 
 
 ## Benchmark: receipt verification (single + batch)
 
+### 🔧 Smart Auto-Setup
+
+**Verification scripts automatically detect and initialize contract state** when needed. The system checks if nodes are authorized and firmware is approved before running single verification tests. If setup is required, it automatically runs:
+
+- `initialize()` - Contract initialization
+- `authorizeNode(bytes32)` - Node authorization  
+- `approveFirmware(bytes32)` - Firmware approval
+
+Manual `--setup` flag remains available for explicit control.
+
+### ⚠️ Known Limitation
+
+**Single-call `verifyReceipt` has a counter synchronization issue** with the batch verification path. Batch verification (the primary interface) works correctly and is the recommended integration pattern. Single-call verification is under investigation and will be addressed in v0.2 post-audit. The current deployed contract should be treated as a research prototype, not production infrastructure.
+
 ### Conditions
 
 - Network: Arbitrum Sepolia
